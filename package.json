@@ -1,5 +1,8 @@
 {
   "dependencies": {
+    "@sapphire/framework": "^4.2.2",
+    "discord.js": "^14.8.0",
+    "dotenv": "^16.0.3",
     "tau-prolog": "^0.3.4"
   }
 }
