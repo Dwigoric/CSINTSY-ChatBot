@@ -1,4 +1,16 @@
 {
+  "name": "med-diagnose-bot",
+  "version": "0.0.1",
+  "description": "A bot that diagnoses medical conditions",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/app.js",
+    "build-and-start": "npm run build && npm run start",
+    "dev": "nodemon --watch src --exec ts-node src/app.ts",
+    "lint": "eslint src --ext .ts",
+    "lint:fix": "eslint src --ext .ts --fix"
+  },
   "dependencies": {
     "@sapphire/framework": "^4.2.2",
     "discord.js": "^14.8.0",
