@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/app.js",
-    "build-and-start": "npm run build && npm run start",
+    "build:start": "npm run build && npm run start",
     "dev": "nodemon --watch src --exec ts-node src/app.ts",
     "lint": "eslint src --ext .ts",
     "lint:fix": "eslint src --ext .ts --fix"
