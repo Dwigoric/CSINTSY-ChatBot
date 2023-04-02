@@ -16,5 +16,11 @@
     "discord.js": "^14.8.0",
     "dotenv": "^16.0.3",
     "tau-prolog": "^0.3.4"
+  },
+  "devDependencies": {
+    "eslint": "^8.37.0",
+    "nodemon": "^2.0.22",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.3"
   }
 }
