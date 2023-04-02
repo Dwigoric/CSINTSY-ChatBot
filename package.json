@@ -2,7 +2,7 @@
   "name": "med-diagnose-bot",
   "version": "0.0.1",
   "description": "A bot that diagnoses medical conditions",
-  "main": "dist/index.js",
+  "main": "dist/app.js",
   "scripts": {
     "build": "tsc",
     "start": "node dist/app.js",
