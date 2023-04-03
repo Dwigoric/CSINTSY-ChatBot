@@ -30,13 +30,15 @@ export default {
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMessages,
         GatewayIntentBits.GuildMessageReactions,
-        GatewayIntentBits.DirectMessages
+        GatewayIntentBits.DirectMessages,
+        GatewayIntentBits.DirectMessageReactions,
+        GatewayIntentBits.MessageContent
     ],
 
     /**
      * Caching Options
      */
-    partials: [Partials.GuildMember, Partials.User, Partials.Channel],
+    partials: [Partials.Message, Partials.Channel],
     sweepers: {
         messages: {
             interval: 30,
