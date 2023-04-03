@@ -23,6 +23,8 @@ export default {
         status: 'online' as PresenceStatusData,
         activities: [{ name: 'illnesses', type: ActivityType.Watching }] as ActivityOptions[]
     },
+    // Whether to load the default error listeners
+    loadDefaultErrorListeners: true,
     // Whether to load the message command listeners
     loadMessageCommandListeners: true,
     // Intents
