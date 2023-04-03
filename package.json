@@ -15,6 +15,7 @@
     "lint:fix": "eslint src --ext .ts --fix"
   },
   "dependencies": {
+    "@sapphire/discord.js-utilities": "^6.0.4",
     "@sapphire/framework": "^4.2.2",
     "discord.js": "^14.9.0",
     "dotenv": "^16.0.3",
