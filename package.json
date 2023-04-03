@@ -10,6 +10,7 @@
     "start": "node dist/app.js",
     "start:pm2": "pm2 start dist/app.js --name \"med-diagnose-bot\"",
     "build:start": "npm run build && npm run start",
+    "build:start:pm2": "npm run build && npm run start:pm2",
     "dev": "nodemon --watch src --exec ts-node src/app.ts",
     "lint": "eslint src --ext .ts",
     "lint:fix": "eslint src --ext .ts --fix"
