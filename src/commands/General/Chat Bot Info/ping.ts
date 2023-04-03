@@ -25,7 +25,7 @@ export class PingCommand extends Command {
         const sentMessage = await interaction.reply({ content: 'Pinging...', ephemeral: true, fetchReply: true });
 
         return isMessageInstance(sentMessage) ?
-            sentMessage.edit(`Pong! Latency is ${sentMessage.createdTimestamp - interaction.createdTimestamp}ms. API Latency is ${Math.round(container.client.ws.ping)}ms`) :
+            interaction.editReply(`Pong! Latency is ${sentMessage.createdTimestamp - interaction.createdTimestamp}ms. API Latency is ${Math.round(container.client.ws.ping)}ms`) :
             interaction.editReply('Failed to get ping.');
     }
 
