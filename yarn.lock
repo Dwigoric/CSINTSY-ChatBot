@@ -2490,6 +2490,7 @@ __metadata:
     "@sapphire/discord.js-utilities": ^6.0.4
     "@sapphire/framework": ^4.2.2
     "@yarnpkg/pnpify": ^4.0.0-rc.42
+    discord-api-types: ^0.37.37
     discord.js: ^14.9.0
     dotenv: ^16.0.3
     eslint: ^8.37.0
