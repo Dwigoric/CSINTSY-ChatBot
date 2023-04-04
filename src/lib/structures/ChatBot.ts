@@ -14,11 +14,17 @@ interface tau_prolog {
 }
 
 export default class ChatBot extends SapphireClient {
-    private pl: tau_prolog;
+    pl: tau_prolog;
 
     constructor(options: ClientOptions) {
         super(options);
 
         this.pl = require('tau-prolog');
+    }
+}
+
+declare module 'discord.js' {
+    interface Client {
+        pl: tau_prolog;
     }
 }
