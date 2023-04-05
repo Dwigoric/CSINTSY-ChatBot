@@ -1,6 +1,6 @@
 import {ChatInputCommand, Command} from '@sapphire/framework';
 import {Snowflake} from 'discord-api-types/globals';
-import {ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle} from 'discord.js';
+import {ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder} from 'discord.js';
 
 interface DiagnosisSession {
     interaction: Command.ChatInputCommandInteraction;
@@ -26,6 +26,11 @@ export class DiagnoseCommand extends Command {
             builder
                 .setName(this.name)
                 .setDescription(this.description)
+                .addStringOption(option =>
+                    option
+                        .setName('name')
+                        .setDescription('The name of the user to diagnose.')
+                        .setRequired(true))
         }, {
             guildIds: [process.env.TEST_GUILD_ID ?? ''],
             idHints: ['1092963801625792512']
@@ -40,20 +45,40 @@ export class DiagnoseCommand extends Command {
             });
         }
 
-        const modal = new ModalBuilder()
-            .setTitle('What is your name?')
-            .setCustomId('diagnosis-name-modal');
+        const actionRow = new ActionRowBuilder<ButtonBuilder>()
+            .addComponents(
+                new ButtonBuilder()
+                    .setCustomId('diagnosis:agree')
+                    .setLabel('I agree')
+                    .setEmoji('✅')
+                    .setStyle(ButtonStyle.Success)
+            )
 
-        const nameInput = new TextInputBuilder()
-            .setCustomId('name')
-            .setLabel('Name')
-            .setPlaceholder('Your name')
-            .setStyle(TextInputStyle.Short)
-            .setRequired(true);
-
-        const actRow = new ActionRowBuilder<TextInputBuilder>().addComponents(nameInput);
-        modal.addComponents(actRow);
-
-        await interaction.showModal(modal);
+        await interaction.reply({
+            embeds: [
+                new EmbedBuilder()
+                    .setTitle(`Hello, ${interaction.options.getString('name')}!`)
+                    .setDescription([
+                        '**Agreement**',
+                        '',
+                        'By continuing, you agree to the following:',
+                        '1. This bot is not a medical professional.',
+                        '2. This bot is not responsible for any harm caused by the diagnosis.',
+                        '3. Any diagnosis given by this bot is not a substitute for a real diagnosis by a medical professional.'
+                    ].join('\n'))
+                    .addFields([
+                        {
+                            name: 'What about my data?',
+                            value: [
+                                'Your data will NOT be stored on a persistent database.',
+                                'Moreover, your data will NOT be shared with any third-party services.',
+                                'However, your data will be stored in memory for the duration of the diagnosis session.'
+                            ].join(' ')
+                        }
+                    ])
+            ],
+            components: [actionRow],
+            ephemeral: true
+        });
     }
 }
