@@ -15,7 +15,43 @@ interface TauPrologInstance {
     create: (options: { limit: number }) => Session;
 }
 
-const diagnose = (session: Session) => {
+interface PersonalData {
+    name: string;
+    age: number;
+    biologicalSex: string;
+    height: number;
+    weight: number;
+    smoking: boolean;
+}
+
+export default class ChatBot extends SapphireClient {
+    pl: TauPrologInstance;
+
+    // Snowflake is a string, but it's a string of numbers.
+    // ChatBot#sessions is a map of user IDs to sessions (channel IDs).
+    sessions: Map<Snowflake, PersonalData>;
+
+    constructor(options: ClientOptions) {
+        super(options);
+
+        this.pl = require("tau-prolog");
+        this.sessions = new Map();
+    }
+
+    async start() {
+        const session: Session = this.pl.create({ limit: 1000 });
+        diagnosis(session);
+    }
+}
+
+declare module "discord.js" {
+    interface Client {
+        pl: TauPrologInstance;
+        sessions: Map<Snowflake, PersonalData>;
+    }
+}
+
+function diagnosis(session: Session) {
     session.consult("../../knowledgeBase.pro"),
         {
             success: () => {
@@ -41,31 +77,4 @@ const diagnose = (session: Session) => {
                 }
             },
         };
-};
-
-export default class ChatBot extends SapphireClient {
-    pl: TauPrologInstance;
-
-    // Snowflake is a string, but it's a string of numbers.
-    // ChatBot#sessions is a map of user IDs to sessions (channel IDs).
-    sessions: Map<Snowflake, Snowflake>;
-
-    constructor(options: ClientOptions) {
-        super(options);
-
-        this.pl = require("tau-prolog");
-        this.sessions = new Map();
-    }
-
-    async start() {
-        const session: Session = this.pl.create({ limit: 1000 });
-        diagnose(session);
-    }
-}
-
-declare module "discord.js" {
-    interface Client {
-        pl: TauPrologInstance;
-        sessions: Map<Snowflake, Snowflake>;
-    }
 }

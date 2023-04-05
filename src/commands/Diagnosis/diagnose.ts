@@ -14,10 +14,46 @@ export class DiagnoseCommand extends Command {
             builder
                 .setName(this.name)
                 .setDescription(this.description)
+                // Preliminary questions
                 .addStringOption(option =>
                     option
                         .setName('name')
                         .setDescription('The name of the user to diagnose.')
+                        .setRequired(true))
+                .addIntegerOption(option =>
+                    option
+                        .setName('age')
+                        .setDescription('The age of the user to diagnose.')
+                        .setRequired(true)
+                        .setMinValue(0)
+                        .setMaxValue(122))
+                .addStringOption(option =>
+                    option
+                        .setName('biological sex')
+                        .setDescription('The biological sex of the user to diagnose.')
+                        .setRequired(true)
+                        .setChoices(
+                            { name: 'M', value: 'M' },
+                            { name: 'F', value: 'F' }
+                        ))
+                .addNumberOption(option =>
+                    option
+                        .setName('height')
+                        .setDescription('The height of the user to diagnose (in centimeters).')
+                        .setRequired(true)
+                        .setMinValue(0)
+                        .setMaxValue(272))
+                .addNumberOption(option =>
+                    option
+                        .setName('weight')
+                        .setDescription('The weight of the user to diagnose (in kilograms).')
+                        .setRequired(true)
+                        .setMinValue(0)
+                        .setMaxValue(635))
+                .addBooleanOption(option =>
+                    option
+                        .setName('smoking')
+                        .setDescription('Whether the user to diagnose smokes.')
                         .setRequired(true))
         }, {
             guildIds: [process.env.TEST_GUILD_ID ?? ''],
@@ -28,33 +64,51 @@ export class DiagnoseCommand extends Command {
     public async chatInputRun(interaction: Command.ChatInputCommandInteraction) {
         if (this.container.client.sessions.has(interaction.user.id)) {
             return interaction.reply({
-                content: 'You already have a diagnostic session in progress.',
+                content: 'You already have an active session.',
                 ephemeral: true
             });
         }
+        this.container.client.sessions.set(interaction.user.id, {
+            name: interaction.options.getString('name') as string,
+            age: interaction.options.getInteger('age') as number,
+            biologicalSex: interaction.options.getString('biological sex') as string,
+            height: interaction.options.getNumber('height') as number,
+            weight: interaction.options.getNumber('weight') as number,
+            smoking: interaction.options.getBoolean('smoking') as boolean
+        });
 
         const actionRow = new ActionRowBuilder<ButtonBuilder>()
             .addComponents(
-                new ButtonBuilder()
-                    .setCustomId('diagnosis:agree')
-                    .setLabel('I agree')
-                    .setEmoji('✅')
-                    .setStyle(ButtonStyle.Success)
+                new ButtonBuilder({
+                    custom_id: 'diagnosis:agree',
+                    label: 'I agree',
+                    emoji: '✅',
+                    style: ButtonStyle.Success
+                }),
+                new ButtonBuilder({
+                    custom_id: 'diagnosis:disagree',
+                    label: 'I disagree',
+                    emoji: '✖',
+                    style: ButtonStyle.Danger
+                })
             )
 
         await interaction.reply({
             embeds: [
-                new EmbedBuilder()
-                    .setTitle(`Hello, ${interaction.options.getString('name')}!`)
-                    .setDescription([
+                new EmbedBuilder({
+                    title: `Hello, ${interaction.options.getString('name')}!`,
+                    description: [
                         '**Agreement**',
                         '',
                         'By continuing, you agree to the following:',
                         '1. This bot is not a medical professional.',
                         '2. This bot is not responsible for any harm caused by the diagnosis.',
-                        '3. Any diagnosis given by this bot is not a substitute for a real diagnosis by a medical professional.'
-                    ].join('\n'))
-                    .addFields([
+                        '3. Any diagnosis given by this bot is not a substitute for a real diagnosis by a medical professional.',
+                        '',
+                        'If you agree to the above, please click the green button below.',
+                        'Otherwise, please click the red button instead.'
+                    ].join('\n'),
+                    fields: [
                         {
                             name: 'What about my data?',
                             value: [
@@ -63,7 +117,8 @@ export class DiagnoseCommand extends Command {
                                 'However, your data will be stored in memory for the duration of the diagnosis session.'
                             ].join(' ')
                         }
-                    ])
+                    ]
+                })
             ],
             components: [actionRow],
             ephemeral: true
