@@ -54,6 +54,7 @@ export default class ChatBot extends SapphireClient {
         super(options);
 
         this.pl = require("tau-prolog");
+        this.sessions = new Map();
     }
 
     async start() {
