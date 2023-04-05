@@ -1,5 +1,5 @@
-import { SapphireClient } from "@sapphire/framework";
-import { ClientOptions } from "discord.js";
+import {SapphireClient} from '@sapphire/framework';
+import {ClientOptions, Snowflake} from "discord.js";
 
 interface Session {
     consult: (code: string) => void;
@@ -46,6 +46,10 @@ const diagnosis = (session: Session) => {
 export default class ChatBot extends SapphireClient {
     pl: TauPrologInstance;
 
+    // Snowflake is a string, but it's a string of numbers.
+    // ChatBot#sessions is a map of user IDs to sessions (channel IDs).
+    sessions: Map<Snowflake, Snowflake>;
+
     constructor(options: ClientOptions) {
         super(options);
 
@@ -61,5 +65,6 @@ export default class ChatBot extends SapphireClient {
 declare module "discord.js" {
     interface Client {
         pl: TauPrologInstance;
+        sessions: Map<Snowflake, Snowflake>;
     }
 }
