@@ -69,3 +69,31 @@ declare module "discord.js" {
         sessions: Map<Snowflake, Snowflake>;
     }
 }
+
+function diagnosis(session: Session) {
+    session.consult("../../knowledgeBase.pro"),
+        {
+            success: () => {
+                session.query("member(X, [a, b, c])."),
+                    {
+                        success: () => {},
+                        fail: () => {},
+                        error: (err: unknown) => {
+                            if (err instanceof Error) {
+                                console.log(
+                                    `[ERROR in query - ChatBot.ts] ${err.message}]`
+                                );
+                            }
+                        },
+                    };
+            },
+
+            error: (err: unknown) => {
+                if (err instanceof Error) {
+                    console.log(
+                        `[ERROR in consult - ChatBot.ts] ${err.message}]`
+                    );
+                }
+            },
+        };
+}
