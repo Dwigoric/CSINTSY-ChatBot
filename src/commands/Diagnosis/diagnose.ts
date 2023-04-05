@@ -35,26 +35,27 @@ export class DiagnoseCommand extends Command {
 
         const actionRow = new ActionRowBuilder<ButtonBuilder>()
             .addComponents(
-                new ButtonBuilder()
-                    .setCustomId('diagnosis:agree')
-                    .setLabel('I agree')
-                    .setEmoji('✅')
-                    .setStyle(ButtonStyle.Success)
+                new ButtonBuilder({
+                    custom_id: 'diagnosis:agree',
+                    label: 'I agree',
+                    emoji: '✅',
+                    style: ButtonStyle.Success
+                })
             )
 
         await interaction.reply({
             embeds: [
-                new EmbedBuilder()
-                    .setTitle(`Hello, ${interaction.options.getString('name')}!`)
-                    .setDescription([
+                new EmbedBuilder({
+                    title: `Hello, ${interaction.options.getString('name')}!`,
+                    description: [
                         '**Agreement**',
                         '',
                         'By continuing, you agree to the following:',
                         '1. This bot is not a medical professional.',
                         '2. This bot is not responsible for any harm caused by the diagnosis.',
                         '3. Any diagnosis given by this bot is not a substitute for a real diagnosis by a medical professional.'
-                    ].join('\n'))
-                    .addFields([
+                    ].join('\n'),
+                    fields: [
                         {
                             name: 'What about my data?',
                             value: [
@@ -63,7 +64,8 @@ export class DiagnoseCommand extends Command {
                                 'However, your data will be stored in memory for the duration of the diagnosis session.'
                             ].join(' ')
                         }
-                    ])
+                    ]
+                })
             ],
             components: [actionRow],
             ephemeral: true
