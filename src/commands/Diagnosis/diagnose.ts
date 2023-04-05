@@ -26,13 +26,6 @@ export class DiagnoseCommand extends Command {
     }
 
     public async chatInputRun(interaction: Command.ChatInputCommandInteraction) {
-        if (this.container.client.sessions.has(interaction.user.id)) {
-            return interaction.reply({
-                content: 'You already have a diagnostic session in progress.',
-                ephemeral: true
-            });
-        }
-
         const actionRow = new ActionRowBuilder<ButtonBuilder>()
             .addComponents(
                 new ButtonBuilder({
