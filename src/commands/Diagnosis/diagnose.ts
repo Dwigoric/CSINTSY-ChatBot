@@ -14,10 +14,46 @@ export class DiagnoseCommand extends Command {
             builder
                 .setName(this.name)
                 .setDescription(this.description)
+                // Preliminary questions
                 .addStringOption(option =>
                     option
                         .setName('name')
                         .setDescription('The name of the user to diagnose.')
+                        .setRequired(true))
+                .addIntegerOption(option =>
+                    option
+                        .setName('age')
+                        .setDescription('The age of the user to diagnose.')
+                        .setRequired(true)
+                        .setMinValue(0)
+                        .setMaxValue(122))
+                .addStringOption(option =>
+                    option
+                        .setName('biological sex')
+                        .setDescription('The biological sex of the user to diagnose.')
+                        .setRequired(true)
+                        .setChoices(
+                            { name: 'M', value: 'M' },
+                            { name: 'F', value: 'F' }
+                        ))
+                .addNumberOption(option =>
+                    option
+                        .setName('height')
+                        .setDescription('The height of the user to diagnose (in centimeters).')
+                        .setRequired(true)
+                        .setMinValue(0)
+                        .setMaxValue(272))
+                .addNumberOption(option =>
+                    option
+                        .setName('weight')
+                        .setDescription('The weight of the user to diagnose (in kilograms).')
+                        .setRequired(true)
+                        .setMinValue(0)
+                        .setMaxValue(635))
+                .addBooleanOption(option =>
+                    option
+                        .setName('smoking')
+                        .setDescription('Whether the user to diagnose smokes.')
                         .setRequired(true))
         }, {
             guildIds: [process.env.TEST_GUILD_ID ?? ''],
