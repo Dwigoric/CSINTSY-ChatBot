@@ -15,40 +15,21 @@ interface TauPrologInstance {
     create: (options: { limit: number }) => Session;
 }
 
-const diagnosis = (session: Session) => {
-    session.consult("../../knowledgeBase.pro"),
-        {
-            success: () => {
-                session.query("member(X, [a, b, c])."),
-                    {
-                        success: () => {},
-                        fail: () => {},
-                        error: (err: unknown) => {
-                            if (err instanceof Error) {
-                                console.log(
-                                    `[ERROR in query - ChatBot.ts] ${err.message}]`
-                                );
-                            }
-                        },
-                    };
-            },
-
-            error: (err: unknown) => {
-                if (err instanceof Error) {
-                    console.log(
-                        `[ERROR in consult - ChatBot.ts] ${err.message}]`
-                    );
-                }
-            },
-        };
-};
+interface PersonalData {
+    name: string;
+    age: number;
+    biologicalSex: string;
+    height: number;
+    weight: number;
+    smoking: boolean;
+}
 
 export default class ChatBot extends SapphireClient {
     pl: TauPrologInstance;
 
     // Snowflake is a string, but it's a string of numbers.
     // ChatBot#sessions is a map of user IDs to sessions (channel IDs).
-    sessions: Map<Snowflake, Snowflake>;
+    sessions: Map<Snowflake, PersonalData>;
 
     constructor(options: ClientOptions) {
         super(options);
@@ -66,7 +47,7 @@ export default class ChatBot extends SapphireClient {
 declare module "discord.js" {
     interface Client {
         pl: TauPrologInstance;
-        sessions: Map<Snowflake, Snowflake>;
+        sessions: Map<Snowflake, PersonalData>;
     }
 }
 

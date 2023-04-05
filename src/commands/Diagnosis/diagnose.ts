@@ -62,6 +62,21 @@ export class DiagnoseCommand extends Command {
     }
 
     public async chatInputRun(interaction: Command.ChatInputCommandInteraction) {
+        if (this.container.client.sessions.has(interaction.user.id)) {
+            return interaction.reply({
+                content: 'You already have an active session.',
+                ephemeral: true
+            });
+        }
+        this.container.client.sessions.set(interaction.user.id, {
+            name: interaction.options.getString('name') as string,
+            age: interaction.options.getInteger('age') as number,
+            biologicalSex: interaction.options.getString('biological sex') as string,
+            height: interaction.options.getNumber('height') as number,
+            weight: interaction.options.getNumber('weight') as number,
+            smoking: interaction.options.getBoolean('smoking') as boolean
+        });
+
         const actionRow = new ActionRowBuilder<ButtonBuilder>()
             .addComponents(
                 new ButtonBuilder({
@@ -69,6 +84,12 @@ export class DiagnoseCommand extends Command {
                     label: 'I agree',
                     emoji: '✅',
                     style: ButtonStyle.Success
+                }),
+                new ButtonBuilder({
+                    custom_id: 'diagnosis:disagree',
+                    label: 'I disagree',
+                    emoji: '✖',
+                    style: ButtonStyle.Danger
                 })
             )
 
@@ -82,7 +103,10 @@ export class DiagnoseCommand extends Command {
                         'By continuing, you agree to the following:',
                         '1. This bot is not a medical professional.',
                         '2. This bot is not responsible for any harm caused by the diagnosis.',
-                        '3. Any diagnosis given by this bot is not a substitute for a real diagnosis by a medical professional.'
+                        '3. Any diagnosis given by this bot is not a substitute for a real diagnosis by a medical professional.',
+                        '',
+                        'If you agree to the above, please click the green button below.',
+                        'Otherwise, please click the red button instead.'
                     ].join('\n'),
                     fields: [
                         {
