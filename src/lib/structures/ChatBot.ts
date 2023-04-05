@@ -15,7 +15,7 @@ interface TauPrologInstance {
     create: (options: { limit: number }) => Session;
 }
 
-const diagnosis = (session: Session) => {
+const diagnose = (session: Session) => {
     session.consult("../../knowledgeBase.pro"),
         {
             success: () => {
@@ -58,7 +58,7 @@ export default class ChatBot extends SapphireClient {
 
     async start() {
         const session: Session = this.pl.create({ limit: 1000 });
-        diagnosis(session);
+        diagnose(session);
     }
 }
 
