@@ -1,9 +1,14 @@
-import { Command } from '@sapphire/framework';
-import { Snowflake } from 'discord-api-types/globals';
-import { Message } from 'discord.js';
+import {ChatInputCommand, Command} from '@sapphire/framework';
+import {Snowflake} from 'discord-api-types/globals';
+import {ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle} from 'discord.js';
+
+interface DiagnosisSession {
+    interaction: Command.ChatInputCommandInteraction;
+    name: string;
+}
 
 export class DiagnoseCommand extends Command {
-    private sessions: Map<Snowflake, Snowflake>;
+    private sessions: Map<Snowflake, DiagnosisSession>;
 
     constructor(context: Command.Context, options: Command.Options) {
         super(context, {
@@ -12,37 +17,43 @@ export class DiagnoseCommand extends Command {
         });
 
         // The sessions map is used to store the diagnosis session for each user.
-        // The key is the user's ID, and the value is the Discord channel ID.
-        this.sessions = new Map();
+        // The key is the user's ID, and the value is the session (interaction) ID.
+        this.sessions = new Map<Snowflake, DiagnosisSession>();
     }
 
-    async messageRun(message: Message) {
-        // If the user is already in a diagnosis session, then send a message to the channel
-        // that the user is already in a session.
-        if (this.sessions.has(message.author.id)) {
-            return message.channel.send('You are already in a diagnosis session.');
+    public override registerApplicationCommands(registry: ChatInputCommand.Registry) {
+        registry.registerChatInputCommand(builder => {
+            builder
+                .setName(this.name)
+                .setDescription(this.description)
+        }, {
+            guildIds: [process.env.TEST_GUILD_ID ?? ''],
+            idHints: ['1092963801625792512']
+        });
+    }
+
+    public async chatInputRun(interaction: Command.ChatInputCommandInteraction) {
+        if (this.sessions.has(interaction.user.id)) {
+            return interaction.reply({
+                content: 'You already have a diagnostic session in progress.',
+                ephemeral: true
+            });
         }
 
-        // Create a new diagnosis session for the user.
-        const session = await message.channel.send('Starting diagnosis session...');
+        const modal = new ModalBuilder()
+            .setTitle('What is your name?')
+            .setCustomId('diagnosis-name-modal');
 
-        // Add the user to the sessions map.
-        this.sessions.set(message.author.id, session.channel.id);
+        const nameInput = new TextInputBuilder()
+            .setCustomId('name')
+            .setLabel('Name')
+            .setPlaceholder('Your name')
+            .setStyle(TextInputStyle.Short)
+            .setRequired(true);
 
-        // Send a message to the user to tell them that the session has started.
-        await message.channel.send('Diagnosis session started.');
+        const actRow = new ActionRowBuilder<TextInputBuilder>().addComponents(nameInput);
+        modal.addComponents(actRow);
 
-        // Start the diagnosis session.
-        await this.startSession(message);
-
-        // Send a message to the user to tell them that the session has ended.
-        await message.channel.send('Diagnosis session ended.');
-
-        // Remove the user from the sessions map.
-        this.sessions.delete(message.author.id);
-    }
-
-    private async startSession(message: Message) {
-        return message.channel.send('This command is not yet implemented.');
+        await interaction.showModal(modal);
     }
 }
