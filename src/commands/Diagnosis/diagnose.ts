@@ -29,7 +29,7 @@ export class DiagnoseCommand extends Command {
                         .setMaxValue(122))
                 .addStringOption(option =>
                     option
-                        .setName('biological sex')
+                        .setName('biological_sex')
                         .setDescription('The biological sex of the user to diagnose.')
                         .setRequired(true)
                         .setChoices(
@@ -71,7 +71,7 @@ export class DiagnoseCommand extends Command {
         this.container.client.sessions.set(interaction.user.id, {
             name: interaction.options.getString('name') as string,
             age: interaction.options.getInteger('age') as number,
-            biologicalSex: interaction.options.getString('biological sex') as string,
+            biologicalSex: interaction.options.getString('biological_sex') as string,
             height: interaction.options.getNumber('height') as number,
             weight: interaction.options.getNumber('weight') as number,
             smoking: interaction.options.getBoolean('smoking') as boolean
