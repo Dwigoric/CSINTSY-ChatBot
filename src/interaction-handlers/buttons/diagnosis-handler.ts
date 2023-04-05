@@ -20,8 +20,7 @@ export class DiagnosisHandler extends InteractionHandler {
      * @param interaction   The interaction that triggered this handler.
      */
     public async run(interaction: ButtonInteraction) {
-        const session = this.container.client.sessions.get(interaction.user.id);
-        if (session) return;
+        if (this.container.client.sessions.has(interaction.user.id)) return;
         this.container.client.sessions.set(interaction.user.id, interaction.channelId);
 
         const plSession = this.container.client.pl.create({limit: 1000});
