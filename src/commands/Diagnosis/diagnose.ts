@@ -1,24 +1,12 @@
 import {ChatInputCommand, Command} from '@sapphire/framework';
-import {Snowflake} from 'discord-api-types/globals';
 import {ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder} from 'discord.js';
 
-interface DiagnosisSession {
-    interaction: Command.ChatInputCommandInteraction;
-    name: string;
-}
-
 export class DiagnoseCommand extends Command {
-    private sessions: Map<Snowflake, DiagnosisSession>;
-
     constructor(context: Command.Context, options: Command.Options) {
         super(context, {
             ...options,
             description: 'Starts a diagnosis session.'
         });
-
-        // The sessions map is used to store the diagnosis session for each user.
-        // The key is the user's ID, and the value is the session (interaction) ID.
-        this.sessions = new Map<Snowflake, DiagnosisSession>();
     }
 
     public override registerApplicationCommands(registry: ChatInputCommand.Registry) {
@@ -38,7 +26,7 @@ export class DiagnoseCommand extends Command {
     }
 
     public async chatInputRun(interaction: Command.ChatInputCommandInteraction) {
-        if (this.sessions.has(interaction.user.id)) {
+        if (this.container.client.sessions.has(interaction.user.id)) {
             return interaction.reply({
                 content: 'You already have a diagnostic session in progress.',
                 ephemeral: true
