@@ -17,11 +17,12 @@ interface TauPrologInstance {
 
 type FamilyHistory = 'high_blood_pressure' | 'diabetes' | 'uti' | 'breast_cancer';
 interface PersonalData {
-    name: string;
     age: number;
     biologicalSex: string;
     height: number;
     weight: number;
+    systolicBloodPressure: number;
+    diastolicBloodPressure: number;
     smoking: boolean;
     history: FamilyHistory[];
     accomplishedHistory: boolean;

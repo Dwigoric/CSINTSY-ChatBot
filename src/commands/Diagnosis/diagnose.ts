@@ -50,6 +50,28 @@ export class DiagnoseCommand extends Command {
                         .setRequired(true)
                         .setMinValue(0)
                         .setMaxValue(635))
+                .addIntegerOption(option =>
+                    option
+                        .setName('systolic_blood_pressure')
+                        .setDescription([
+                            'The systolic blood pressure of the patient to diagnose.',
+                            'For example, if the patient\'s blood pressure is 120/80,',
+                            'then the systolic blood pressure is 120.'
+                        ].join(' '))
+                        .setRequired(true)
+                        .setMinValue(120)
+                        .setMaxValue(370))
+                .addIntegerOption(option =>
+                    option
+                        .setName('diastolic_blood_pressure')
+                        .setDescription([
+                            'The diastolic blood pressure of the patient to diagnose.',
+                            'For example, if the patient\'s blood pressure is 120/80,',
+                            'then the diastolic blood pressure is 80.'
+                        ].join(' '))
+                        .setRequired(true)
+                        .setMinValue(30)
+                        .setMaxValue(360))
                 .addBooleanOption(option =>
                     option
                         .setName('smoking')
@@ -65,11 +87,12 @@ export class DiagnoseCommand extends Command {
         if (this.container.client.directory.has(interaction.user.id)) return this.handleExistingSession(interaction);
 
         this.container.client.directory.set(interaction.user.id, {
-            name: interaction.options.getString('name') as string,
             age: interaction.options.getInteger('age') as number,
             biologicalSex: interaction.options.getString('biological_sex') as string,
             height: interaction.options.getNumber('height') as number,
             weight: interaction.options.getNumber('weight') as number,
+            systolicBloodPressure: interaction.options.getInteger('systolic_blood_pressure') as number,
+            diastolicBloodPressure: interaction.options.getInteger('diastolic_blood_pressure') as number,
             smoking: interaction.options.getBoolean('smoking') as boolean,
             history: [],
             accomplishedHistory: false,
@@ -95,7 +118,7 @@ export class DiagnoseCommand extends Command {
         await interaction.reply({
             embeds: [
                 new EmbedBuilder({
-                    title: `Hello, ${interaction.options.getString('name')}!`,
+                    title: 'Diagnosis Agreement',
                     description: [
                         '**Agreement**',
                         '',
@@ -118,6 +141,7 @@ export class DiagnoseCommand extends Command {
                         }
                     ]
                 })
+                    .setColor('Random')
             ],
             components: [actionRow],
             ephemeral: true
