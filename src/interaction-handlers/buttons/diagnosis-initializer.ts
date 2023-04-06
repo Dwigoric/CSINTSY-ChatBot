@@ -1,26 +1,39 @@
 import {InteractionHandler, InteractionHandlerTypes, PieceContext} from "@sapphire/framework";
-import {ActionRowBuilder, ButtonInteraction, StringSelectMenuBuilder} from "discord.js";
+import {ActionRowBuilder, StringSelectMenuInteraction, StringSelectMenuBuilder} from "discord.js";
 
 export class DiagnosisInitializer extends InteractionHandler {
     public constructor(context: PieceContext, options: InteractionHandler.Options) {
         super(context, {
             ...options,
-            interactionHandlerType: InteractionHandlerTypes.Button
+            interactionHandlerType: InteractionHandlerTypes.SelectMenu
         });
     }
 
-    public override parse(interaction: ButtonInteraction) {
-        if (interaction.customId !== 'diagnosis:agree') return this.none();
+    public override parse(interaction: StringSelectMenuInteraction) {
+        if (interaction.customId !== 'diagnosis:history') return this.none();
+        if (!this.container.client.directory.has(interaction.user.id)) {
+            interaction.reply({
+                content: 'Your session was not found. Please start a new session.',
+                ephemeral: true
+            });
+            return this.none();
+        }
 
         return this.some();
     }
 
-    public async run(interaction: ButtonInteraction) {
+    public async run(interaction: StringSelectMenuInteraction) {
+        // Handle family history
+        type FamilyHistory = 'high_blood_pressure' | 'diabetes' | 'uti' | 'breast_cancer';
+
+        (this.container.client.directory.get(interaction.user.id)!).history = interaction.values.filter(v => v !== 'none') as FamilyHistory[];
+
+        // Initiate the flow of the diagnosis
         const actionRow = new ActionRowBuilder<StringSelectMenuBuilder>()
             .addComponents(
                 new StringSelectMenuBuilder({
                     custom_id: 'diagnosis:flow',
-                    placeholder: 'Select a symptom or habit that you are experiencing.',
+                    placeholder: 'What\'s wrong?',
                     max_values: 1,
                     options: [
                         { label: 'Coughing', value: 'cough' },

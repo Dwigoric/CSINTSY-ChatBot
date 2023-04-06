@@ -62,19 +62,17 @@ export class DiagnoseCommand extends Command {
     }
 
     public async chatInputRun(interaction: Command.ChatInputCommandInteraction) {
-        if (this.container.client.sessions.has(interaction.user.id)) {
-            return interaction.reply({
-                content: 'You already have an active session.',
-                ephemeral: true
-            });
-        }
-        this.container.client.sessions.set(interaction.user.id, {
+        if (this.container.client.directory.has(interaction.user.id)) return this.handleExistingSession(interaction);
+
+        this.container.client.directory.set(interaction.user.id, {
             name: interaction.options.getString('name') as string,
             age: interaction.options.getInteger('age') as number,
             biologicalSex: interaction.options.getString('biological_sex') as string,
             height: interaction.options.getNumber('height') as number,
             weight: interaction.options.getNumber('weight') as number,
-            smoking: interaction.options.getBoolean('smoking') as boolean
+            smoking: interaction.options.getBoolean('smoking') as boolean,
+            history: [],
+            started: false
         });
 
         const actionRow = new ActionRowBuilder<ButtonBuilder>()
@@ -120,6 +118,24 @@ export class DiagnoseCommand extends Command {
                     ]
                 })
             ],
+            components: [actionRow],
+            ephemeral: true
+        });
+    }
+
+    private async handleExistingSession(interaction: Command.ChatInputCommandInteraction) {
+        const actionRow = new ActionRowBuilder<ButtonBuilder>()
+            .addComponents(
+                new ButtonBuilder({
+                    custom_id: 'diagnosis:existing',
+                    label: 'Delete existing session',
+                    emoji: '🗑',
+                    style: ButtonStyle.Danger
+                })
+            );
+
+        return interaction.reply({
+            content: 'You already have an active session. Would you like to delete it?',
             components: [actionRow],
             ephemeral: true
         });
