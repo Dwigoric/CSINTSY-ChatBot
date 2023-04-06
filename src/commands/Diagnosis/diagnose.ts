@@ -53,22 +53,14 @@ export class DiagnoseCommand extends Command {
                 .addIntegerOption(option =>
                     option
                         .setName('systolic_blood_pressure')
-                        .setDescription([
-                            'The systolic blood pressure of the patient to diagnose.',
-                            'For example, if the patient\'s blood pressure is 120/80,',
-                            'then the systolic blood pressure is 120.'
-                        ].join(' '))
+                        .setDescription('If blood pressure (BP) is 120/80, then the systolic BP is 120.')
                         .setRequired(true)
                         .setMinValue(120)
                         .setMaxValue(370))
                 .addIntegerOption(option =>
                     option
                         .setName('diastolic_blood_pressure')
-                        .setDescription([
-                            'The diastolic blood pressure of the patient to diagnose.',
-                            'For example, if the patient\'s blood pressure is 120/80,',
-                            'then the diastolic blood pressure is 80.'
-                        ].join(' '))
+                        .setDescription('If blood pressure (BP) is 120/80, then the diastolic BP is 80.')
                         .setRequired(true)
                         .setMinValue(30)
                         .setMaxValue(360))
