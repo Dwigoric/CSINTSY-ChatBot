@@ -51,7 +51,8 @@ export class DiagnosisInitializer extends InteractionHandler {
                     options: [
                         { label: 'Coughing', value: 'cough' },
                         { label: 'Fever', value: 'fever' },
-                        { label: 'Weight Loss', value: 'weight_loss' }
+                        { label: 'Weight Loss', value: 'weight_loss' },
+                        { label: 'NOTA', description: 'None of the above.', value: 'none' }
                     ]
                 })
             );
