@@ -53,8 +53,8 @@ export default class ChatBot extends SapphireClient {
     }
 }
 
-declare module "discord.js" {
-    interface Client {
+declare module "@sapphire/framework" {
+    interface SapphireClient {
         pl: TauPrologInstance;
         directory: Map<Snowflake, PersonalData>;
     }
