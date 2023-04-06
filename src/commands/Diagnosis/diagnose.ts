@@ -18,19 +18,19 @@ export class DiagnoseCommand extends Command {
                 .addStringOption(option =>
                     option
                         .setName('name')
-                        .setDescription('The name of the user to diagnose.')
+                        .setDescription('The name of the patient to diagnose.')
                         .setRequired(true))
                 .addIntegerOption(option =>
                     option
                         .setName('age')
-                        .setDescription('The age of the user to diagnose.')
+                        .setDescription('The age of the patient to diagnose.')
                         .setRequired(true)
                         .setMinValue(0)
                         .setMaxValue(122))
                 .addStringOption(option =>
                     option
                         .setName('biological_sex')
-                        .setDescription('The biological sex of the user to diagnose.')
+                        .setDescription('The biological sex of the patient to diagnose.')
                         .setRequired(true)
                         .setChoices(
                             { name: 'M', value: 'M' },
@@ -39,21 +39,21 @@ export class DiagnoseCommand extends Command {
                 .addNumberOption(option =>
                     option
                         .setName('height')
-                        .setDescription('The height of the user to diagnose (in centimeters).')
+                        .setDescription('The height of the patient to diagnose (in centimeters).')
                         .setRequired(true)
                         .setMinValue(0)
                         .setMaxValue(272))
                 .addNumberOption(option =>
                     option
                         .setName('weight')
-                        .setDescription('The weight of the user to diagnose (in kilograms).')
+                        .setDescription('The weight of the patient to diagnose (in kilograms).')
                         .setRequired(true)
                         .setMinValue(0)
                         .setMaxValue(635))
                 .addBooleanOption(option =>
                     option
                         .setName('smoking')
-                        .setDescription('Whether the user to diagnose smokes.')
+                        .setDescription('Whether the patient to diagnose smokes.')
                         .setRequired(true))
         }, {
             guildIds: [process.env.TEST_GUILD_ID ?? ''],
@@ -109,11 +109,11 @@ export class DiagnoseCommand extends Command {
                     ].join('\n'),
                     fields: [
                         {
-                            name: 'What about my data?',
+                            name: 'What about personal data?',
                             value: [
-                                'Your data will NOT be stored on a persistent database.',
-                                'Moreover, your data will NOT be shared with any third-party services.',
-                                'However, your data will be stored in memory for the duration of the diagnosis session.'
+                                'The data you input, i.e. the data of the patient, will NOT be stored on a persistent database.',
+                                'Moreover, the data will NOT be shared with any third-party services.',
+                                'However, the data will be stored in memory for the duration of the diagnosis session.'
                             ].join(' ')
                         }
                     ]

@@ -39,26 +39,25 @@ export class DiagnosisInitializer extends InteractionHandler {
         userDir.history = interaction.values.filter(value => value !== 'none') as FamilyHistory[];
         userDir.accomplishedHistory = true;
 
+        // TODO: Pass the family history to prolog
+
         // Initiate the flow of the diagnosis
         const actionRow = new ActionRowBuilder<StringSelectMenuBuilder>()
             .addComponents(
                 new StringSelectMenuBuilder({
                     custom_id: 'diagnosis:flow',
                     placeholder: 'What\'s wrong?',
-                    max_values: 1,
+                    max_values: 3,
                     options: [
                         { label: 'Coughing', value: 'cough' },
                         { label: 'Fever', value: 'fever' },
-                        { label: 'Vomiting/Nausea', value: 'nausea' },
-                        { label: 'Fatigue', value: 'fatigue' },
-                        { label: 'Swelling lymph nodes', value: 'lymph' },
-                        { label: 'Smoking', value: 'smoking' }
+                        { label: 'Weight Loss', value: 'weight_loss' }
                     ]
                 })
             );
 
         return interaction.reply({
-            content: 'Please select a symptom or habit that you are experiencing.',
+            content: 'Thank you for that information. To start, select all symptoms that the patient is experiencing.',
             components: [actionRow],
             ephemeral: true
         });

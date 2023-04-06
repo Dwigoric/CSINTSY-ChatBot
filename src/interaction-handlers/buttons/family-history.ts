@@ -25,22 +25,22 @@ export class FamilyHistoryHandler extends InteractionHandler {
                     options: [
                         {
                             label: 'High blood pressure',
-                            description: 'My family has history of high blood pressure.',
+                            description: 'Patient\'s family has history of high blood pressure.',
                             value: 'high_blood_pressure'
                         },
                         {
                             label: 'Diabetes',
-                            description: 'My family has history of diabetes.',
+                            description: 'Patient\'s family has history of diabetes.',
                             value: 'diabetes'
                         },
                         {
                             label: 'UTI',
-                            description: 'My family has history of UTI.',
+                            description: 'Patient\'s family has history of UTI.',
                             value: 'uti'
                         },
                         {
                             label: 'Breast cancer',
-                            description: 'My family has history of breast cancer.',
+                            description: 'Patient\'s family has history of breast cancer.',
                             value: 'breast_cancer'
                         },
                         {
@@ -53,7 +53,7 @@ export class FamilyHistoryHandler extends InteractionHandler {
             );
 
         return interaction.reply({
-            content: 'I will now ask you about your family history. Please select all that apply.',
+            content: 'I will now ask you about the patient\'s family history. Please select all that apply.',
             components: [actionRow],
             ephemeral: true
         });
