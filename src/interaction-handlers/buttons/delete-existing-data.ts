@@ -10,7 +10,7 @@ export class ExistingDataHandler extends InteractionHandler {
     }
 
     public override parse(interaction: ButtonInteraction) {
-        if (interaction.customId !== 'diagnosis:existing') return this.none();
+        if (!['diagnosis:existing', 'diagnosis:disagree'].includes(interaction.customId)) return this.none();
         const data = this.container.client.directory.get(interaction.user.id);
         if (data && data.started) {
             interaction.reply({
@@ -26,7 +26,9 @@ export class ExistingDataHandler extends InteractionHandler {
     public async run(interaction: ButtonInteraction) {
         this.container.client.directory.delete(interaction.user.id);
         return interaction.reply({
-            content: 'Existing session successfully deleted! You can now start a new session.',
+            content: interaction.customId === 'diagnosis:existing' ?
+                'Existing session successfully deleted! You can now start a new session.' :
+                'Diagnosis session cancelled.',
             ephemeral: true
         });
     }
