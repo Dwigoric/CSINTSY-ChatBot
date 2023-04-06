@@ -11,6 +11,14 @@ export class ExistingDataHandler extends InteractionHandler {
 
     public override parse(interaction: ButtonInteraction) {
         if (interaction.customId !== 'diagnosis:existing') return this.none();
+        const data = this.container.client.directory.get(interaction.user.id);
+        if (data && data.started) {
+            interaction.reply({
+                content: '❌ You have already started your diagnosis session.',
+                ephemeral: true
+            });
+            return this.none();
+        }
 
         return this.some();
     }

@@ -22,6 +22,7 @@ interface PersonalData {
     height: number;
     weight: number;
     smoking: boolean;
+    started: boolean;
 }
 
 export default class ChatBot extends SapphireClient {

@@ -70,7 +70,8 @@ export class DiagnoseCommand extends Command {
             biologicalSex: interaction.options.getString('biological_sex') as string,
             height: interaction.options.getNumber('height') as number,
             weight: interaction.options.getNumber('weight') as number,
-            smoking: interaction.options.getBoolean('smoking') as boolean
+            smoking: interaction.options.getBoolean('smoking') as boolean,
+            started: false
         });
 
         const actionRow = new ActionRowBuilder<ButtonBuilder>()
