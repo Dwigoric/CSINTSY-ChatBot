@@ -72,6 +72,7 @@ export class DiagnoseCommand extends Command {
             weight: interaction.options.getNumber('weight') as number,
             smoking: interaction.options.getBoolean('smoking') as boolean,
             history: [],
+            accomplishedHistory: false,
             started: false
         });
 

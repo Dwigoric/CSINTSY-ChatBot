@@ -11,9 +11,18 @@ export class DiagnosisInitializer extends InteractionHandler {
 
     public override parse(interaction: StringSelectMenuInteraction) {
         if (interaction.customId !== 'diagnosis:history') return this.none();
-        if (!this.container.client.directory.has(interaction.user.id)) {
+
+        const userDir = this.container.client.directory.get(interaction.user.id);
+        if (!userDir) {
             interaction.reply({
                 content: 'Your session was not found. Please start a new session.',
+                ephemeral: true
+            });
+            return this.none();
+        }
+        if (userDir.accomplishedHistory) {
+            interaction.reply({
+                content: 'You have already accomplished the family history section.',
                 ephemeral: true
             });
             return this.none();
@@ -26,7 +35,9 @@ export class DiagnosisInitializer extends InteractionHandler {
         // Handle family history
         type FamilyHistory = 'high_blood_pressure' | 'diabetes' | 'uti' | 'breast_cancer';
 
-        (this.container.client.directory.get(interaction.user.id)!).history = interaction.values.filter(v => v !== 'none') as FamilyHistory[];
+        const userDir = this.container.client.directory.get(interaction.user.id)!;
+        userDir.history = interaction.values.filter(value => value !== 'none') as FamilyHistory[];
+        userDir.accomplishedHistory = true;
 
         // Initiate the flow of the diagnosis
         const actionRow = new ActionRowBuilder<StringSelectMenuBuilder>()

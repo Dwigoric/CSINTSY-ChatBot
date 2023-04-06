@@ -24,6 +24,7 @@ interface PersonalData {
     weight: number;
     smoking: boolean;
     history: FamilyHistory[];
+    accomplishedHistory: boolean;
     started: boolean;
 }
 
