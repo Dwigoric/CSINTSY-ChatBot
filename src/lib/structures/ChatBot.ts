@@ -15,6 +15,7 @@ interface TauPrologInstance {
     create: (options: { limit: number }) => Session;
 }
 
+type FamilyHistory = 'high_blood_pressure' | 'diabetes' | 'uti' | 'breast_cancer';
 interface PersonalData {
     name: string;
     age: number;
@@ -22,6 +23,7 @@ interface PersonalData {
     height: number;
     weight: number;
     smoking: boolean;
+    history: FamilyHistory[];
     started: boolean;
 }
 
