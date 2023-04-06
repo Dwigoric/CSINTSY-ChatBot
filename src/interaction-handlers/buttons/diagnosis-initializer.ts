@@ -11,7 +11,7 @@ export class DiagnosisInitializer extends InteractionHandler {
 
     public override parse(interaction: ButtonInteraction) {
         if (interaction.customId !== 'diagnosis:agree') return this.none();
-        if (!this.container.client.sessions.has(interaction.user.id)) {
+        if (!this.container.client.directory.has(interaction.user.id)) {
             interaction.reply({
                 content: 'Your session was not found. Please start a new session.',
                 ephemeral: true

@@ -16,7 +16,7 @@ export class DiagnosisDisagreeHandler extends InteractionHandler {
     }
 
     public async run(interaction: ButtonInteraction) {
-        this.container.client.sessions.delete(interaction.user.id);
+        this.container.client.directory.delete(interaction.user.id);
         return interaction.reply({
             content: 'Diagnosis session cancelled.',
             ephemeral: true

@@ -16,7 +16,7 @@ export class ExistingDataHandler extends InteractionHandler {
     }
 
     public async run(interaction: ButtonInteraction) {
-        this.container.client.sessions.delete(interaction.user.id);
+        this.container.client.directory.delete(interaction.user.id);
         return interaction.reply({
             content: 'Existing session successfully deleted! You can now start a new session.',
             ephemeral: true

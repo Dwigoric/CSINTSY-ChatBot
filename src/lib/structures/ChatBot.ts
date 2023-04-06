@@ -28,14 +28,14 @@ export default class ChatBot extends SapphireClient {
     pl: TauPrologInstance;
 
     // Snowflake is a string, but it's a string of numbers.
-    // ChatBot#sessions is a map of user IDs to sessions (channel IDs).
-    sessions: Map<Snowflake, PersonalData>;
+    // ChatBot#sessions is a map of user IDs to their personal data.
+    directory: Map<Snowflake, PersonalData>;
 
     constructor(options: ClientOptions) {
         super(options);
 
         this.pl = require("tau-prolog");
-        this.sessions = new Map();
+        this.directory = new Map();
     }
 
     async start() {
@@ -47,7 +47,7 @@ export default class ChatBot extends SapphireClient {
 declare module "discord.js" {
     interface Client {
         pl: TauPrologInstance;
-        sessions: Map<Snowflake, PersonalData>;
+        directory: Map<Snowflake, PersonalData>;
     }
 }
 
