@@ -65,7 +65,6 @@ export class DiagnoseCommand extends Command {
         if (this.container.client.directory.has(interaction.user.id)) return this.handleExistingSession(interaction);
 
         this.container.client.directory.set(interaction.user.id, {
-            name: interaction.options.getString('name') as string,
             age: interaction.options.getInteger('age') as number,
             biologicalSex: interaction.options.getString('biological_sex') as string,
             height: interaction.options.getNumber('height') as number,
