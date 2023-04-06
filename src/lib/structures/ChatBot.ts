@@ -1,5 +1,5 @@
-import {SapphireClient} from '@sapphire/framework';
-import {ClientOptions, Snowflake} from "discord.js";
+import { SapphireClient } from "@sapphire/framework";
+import { ClientOptions, Snowflake } from "discord.js";
 
 interface Session {
     consult: (code: string) => void;
@@ -15,7 +15,11 @@ interface TauPrologInstance {
     create: (options: { limit: number }) => Session;
 }
 
-type FamilyHistory = 'high_blood_pressure' | 'diabetes' | 'uti' | 'breast_cancer';
+type FamilyHistory =
+    | "high_blood_pressure"
+    | "diabetes"
+    | "uti"
+    | "breast_cancer";
 interface PersonalData {
     age: number;
     biologicalSex: string;
