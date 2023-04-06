@@ -95,7 +95,7 @@ export class DiagnoseCommand extends Command {
         await interaction.reply({
             embeds: [
                 new EmbedBuilder({
-                    title: `Hello, ${interaction.options.getString('name')}!`,
+                    title: 'Diagnosis Agreement',
                     description: [
                         '**Agreement**',
                         '',
@@ -118,6 +118,7 @@ export class DiagnoseCommand extends Command {
                         }
                     ]
                 })
+                    .setColor('Random')
             ],
             components: [actionRow],
             ephemeral: true
