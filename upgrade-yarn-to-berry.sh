@@ -6,9 +6,6 @@ yarn set version berry
 # Upgrade Yarn Berry to latest version now that Yarn knows where to download it from
 yarn set version latest
 
-# (optional) Set nodeLinker to node-modules - this 100% guarantees backwards compatibility
-yarn config set nodeLinker node-modules
-
 # (optional) Adds `yarn upgrade-interactive` command back
 yarn plugin import interactive-tools
 
