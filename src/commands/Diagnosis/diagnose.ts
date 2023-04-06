@@ -23,14 +23,6 @@ export class DiagnoseCommand extends Command {
                     .setName(this.name)
                     .setDescription(this.description)
                     // Preliminary questions
-                    .addStringOption((option) =>
-                        option
-                            .setName("name")
-                            .setDescription(
-                                "The name of the patient to diagnose."
-                            )
-                            .setRequired(true)
-                    )
                     .addIntegerOption((option) =>
                         option
                             .setName("age")
