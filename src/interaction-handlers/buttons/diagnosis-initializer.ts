@@ -27,7 +27,7 @@ export class DiagnosisInitializer extends InteractionHandler {
             .addComponents(
                 new StringSelectMenuBuilder({
                     custom_id: 'diagnosis:flow',
-                    placeholder: 'Select a symptom or habit that you are experiencing.',
+                    placeholder: 'What\'s wrong?',
                     max_values: 1,
                     options: [
                         { label: 'Coughing', value: 'cough' },
