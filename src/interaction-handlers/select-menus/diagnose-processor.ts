@@ -16,8 +16,6 @@ export class DiagnoseProcessHandler extends InteractionHandler {
     }
 
     public async run(interaction: StringSelectMenuInteraction) {
-        if (this.container.client.directory.has(interaction.user.id)) return;
-
         // This is the symptom that the user selected
         const symptom = interaction.values[0];
 

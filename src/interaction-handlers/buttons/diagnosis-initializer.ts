@@ -36,6 +36,7 @@ export class DiagnosisInitializer extends InteractionHandler {
         type FamilyHistory = 'high_blood_pressure' | 'diabetes' | 'uti' | 'breast_cancer';
 
         const userDir = this.container.client.directory.get(interaction.user.id)!;
+        userDir.started = true; // Mark the session as started
         userDir.history = interaction.values.filter(value => value !== 'none') as FamilyHistory[];
         userDir.accomplishedHistory = true;
 
