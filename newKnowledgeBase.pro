@@ -51,7 +51,7 @@ askBMI:-
     read(Weight),nl,
     BMI is Weight/Height^2,
     (BMI >30 -> assert(has(obese));
-    assert(no(obsese))).
+    assert(no(obese))).
 
 diag(hiv):- hiv.
 diag(tubercolosis):-tubercolosis.
