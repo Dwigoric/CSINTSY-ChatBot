@@ -77,6 +77,7 @@ hiv:-
     (has(multi_infections); (no(multi_infections)->updateChance(hiv,10))),
     (has(unsafe_sex); (no(unsafe_sex)->updateChance(hiv,5))),
     (has(unprotected); (no(unprotected)->updateChance(hiv,5))),
+    (has(multiplepartners);(no(multiplepartners)->updateChance(hiv,5))),
     ((gender(male)->has(msm)); (no(msm)->updateChance(hiv,2))).
 
 tubercolosis:-
