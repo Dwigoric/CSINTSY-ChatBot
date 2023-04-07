@@ -42,6 +42,14 @@ export class DiagnoseCommand extends Command {
 							.setMinValue(0)
 							.setMaxValue(635)
 					)
+                    .addNumberOption((option) =>
+                        option
+                            .setName("body_temperature")
+                            .setDescription("The body temperature of the patient to diagnose (in degrees Celsius).")
+                            .setRequired(true)
+                            .setMinValue(9)
+                            .setMaxValue(46.5)
+                    )
 					.addIntegerOption((option) =>
 						option
 							.setName("systolic_blood_pressure")
@@ -92,7 +100,7 @@ export class DiagnoseCommand extends Command {
 			height: interaction.options.getNumber("height") as number,
 			weight: interaction.options.getNumber("weight") as number,
 			bmi: bmi,
-			bodyTemperature: interaction.options.getNumber("bodyTemp") as number,
+			bodyTemperature: interaction.options.getNumber("body_temp") as number,
 			hasFever: hasFever,
 			systolicBloodPressure: interaction.options.getInteger("systolic_blood_pressure") as number,
 			diastolicBloodPressure: interaction.options.getInteger("diastolic_blood_pressure") as number,
