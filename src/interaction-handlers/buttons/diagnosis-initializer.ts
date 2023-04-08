@@ -30,17 +30,21 @@ export class DiagnosisInitializer extends InteractionHandler {
 
 		// TODO: Add lifestyles as symptoms to the user directory
 
-		// Initiate the flow of the diagnosis
+		const diseases = Object.keys(this.container.client.symptomsPerDisease) as Array<keyof typeof this.container.client.symptomsPerDisease>;
+		const initialSymptoms = this.container.util.parseDiseaseSymptoms(diseases[0]);
+
 		const actionRow = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
 			new StringSelectMenuBuilder({
-				custom_id: "diagnosis:flow",
+				custom_id: "diagnosis:flow-0",
 				placeholder: "What's wrong?",
-				max_values: 3,
+				max_values: initialSymptoms.length,
 				options: [
-					{ label: "Coughing", value: "cough" },
-					{ label: "Fever", value: "fever" },
-					{ label: "Weight Loss", value: "weight_loss" },
-					{ label: "NOTA", description: "None of the above.", value: "none" },
+					...initialSymptoms,
+					{
+						label: "NOTA",
+						description: "None of the above.",
+						value: "none"
+					},
 				],
 			})
 		);

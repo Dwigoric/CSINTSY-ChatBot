@@ -380,7 +380,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sapphire/pieces@npm:^3.6.0":
+"@sapphire/pieces@npm:^3.6.0, @sapphire/pieces@npm:^3.6.1":
   version: 3.6.1
   resolution: "@sapphire/pieces@npm:3.6.1"
   dependencies:
@@ -2489,6 +2489,7 @@ __metadata:
   dependencies:
     "@sapphire/discord.js-utilities": ^6.0.4
     "@sapphire/framework": ^4.2.2
+    "@sapphire/pieces": ^3.6.1
     "@yarnpkg/pnpify": ^4.0.0-rc.42
     discord-api-types: ^0.37.37
     discord.js: ^14.9.0

@@ -90,6 +90,7 @@ export class DiagnoseCommand extends Command {
 			accomplishedLifestyle: false,
 			started: false,
 
+			counter: 0,
 			indicators: []
 		};
 

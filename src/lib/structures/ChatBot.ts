@@ -1,4 +1,4 @@
-import { SapphireClient } from "@sapphire/framework";
+import { container, SapphireClient } from "@sapphire/framework";
 import { ClientOptions, Snowflake } from "discord.js";
 
 
@@ -53,9 +53,22 @@ const symptomQuestions = Object.freeze({
 	lumps: "Have you noticed any lumps or thickening in your breast or armpit area?",
 	breast_change: "Have you noticed any changes in the size, shape, or color of your breast or nipple?",
 	blood_discharge: "Have you noticed any blood discharge from your nipple, other than during breastfeeding?",
-	pain_nipple: "Have you experienced any pain or tenderness in your breast or nipple?"
+	pain_nipple: "Have you experienced any pain or tenderness in your breast or nipple?",
+	chills: "Are you experiencing chills?"
 });
-type SymptomQuestions = typeof symptomQuestions;
+
+const symptomsPerDisease = Object.freeze({
+	bacterial_pneumonia: ["fever", "mucus", "fatigue", "shortness_of_breath", "cough"],
+	tuberculosis: ["cough", "weight_loss", "afternoon_sweats", "swole_lymph_nodes"],
+	measles: ["fever", "rash", "red_eyes", "respiratory"],
+	hypertension: ["kidney", "headache"],
+	gastroenteritis: ["fever", "chills", "nausea_or_vomiting", "diarrhea", "abdominal"],
+	dengue: ["fever", "malaise", "rash", "nausea_or_vomiting", "bleeding"],
+	uti: ["urge_to_urinate", "burning_sensation", "small_urine", "dark_urine", "fever", "chills"],
+	diabetes: ["thirst", "weight_loss", "hunger", "fatigue"],
+	breast_cancer: ["lumps", "breast_change", "blood_discharge", "pain_nipple", "swole_lymph_nodes"],
+	hiv: ["fever", "weight_loss", "white_spot_or_purple_patch", "fatigue", "muscle_ache", "swole_lymph_nodes", "multi_infections"]
+});
 
 type FamilyHistory = "high_blood_pressure" | "diabetes" | "uti" | "breast_cancer";
 interface PersonalData {
@@ -71,7 +84,8 @@ interface PersonalData {
 	accomplishedLifestyle: boolean;
 	started: boolean;
 
-	indicators: (keyof SymptomQuestions)[];
+	counter: number;
+	indicators: (keyof typeof symptomQuestions)[];
 }
 
 
@@ -80,7 +94,8 @@ export default class ChatBot extends SapphireClient {
 	pl: TauPrologInstance;
 	session: Session;
 	personalData: PersonalData;
-	symptomQuestions: SymptomQuestions;
+	symptomQuestions: typeof symptomQuestions;
+	symptomsPerDisease: typeof symptomsPerDisease;
 
 	// Snowflake is a string, but it's a string of numbers.
 	// ChatBot#sessions is a map of user IDs to their personal data.
@@ -89,9 +104,12 @@ export default class ChatBot extends SapphireClient {
 	constructor(options: ClientOptions) {
 		super(options);
 
+		container.util = require("../util/util");
+
 		this.pl = require("tau-prolog");
 		this.session = this.pl.create({ limit: 1000 });
 		this.symptomQuestions = symptomQuestions;
+		this.symptomsPerDisease = symptomsPerDisease;
 		this.directory = new Map();
 	}
 
@@ -102,12 +120,20 @@ export default class ChatBot extends SapphireClient {
 	}
 }
 
+declare module "@sapphire/pieces" {
+	interface Container {
+		util: typeof import("../util/util");
+	}
+}
+
 declare module "@sapphire/framework" {
+
 	interface SapphireClient {
 		pl: TauPrologInstance;
 		session: Session;
 		personalData: PersonalData;
-		symptomQuestions: SymptomQuestions;
+		symptomQuestions: typeof symptomQuestions;
+		symptomsPerDisease: typeof symptomsPerDisease;
 		directory: Map<Snowflake, PersonalData>;
 
 		getSymptoms(query: string): void;
