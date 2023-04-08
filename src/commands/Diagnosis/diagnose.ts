@@ -77,6 +77,9 @@ export class DiagnoseCommand extends Command {
 	public async chatInputRun(interaction: Command.ChatInputCommandInteraction) {
 		if (this.container.client.directory.has(interaction.user.id)) return this.handleExistingSession(interaction);
 
+		// const user = this.container.client.directory.get(interaction.user.id)!;
+		// const finalDiagnosis = await this.container.client.getDiagnosis(["w"], ["vv"], user);
+
 		const personalData = {
 			age: interaction.options.getInteger("age")!,
 			biologicalSex: interaction.options.getString("biological_sex")!,
@@ -91,7 +94,7 @@ export class DiagnoseCommand extends Command {
 			counter: 0,
 			indicators: [],
 			asked: [],
-			finishedSections: []
+			finishedSections: [],
 		};
 
 		this.container.client.directory.set(interaction.user.id, personalData);
