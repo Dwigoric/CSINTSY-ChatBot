@@ -32,11 +32,10 @@ export class ExistingDataHandler extends InteractionHandler {
 
     public async run(interaction: ButtonInteraction) {
         this.container.client.directory.delete(interaction.user.id);
-        return interaction.reply({
+        return interaction.update({
             content: interaction.customId === 'diagnosis:existing' ?
                 'Existing session successfully deleted! You can now start a new session.' :
                 'Diagnosis session cancelled.',
-            ephemeral: true
         });
     }
 }

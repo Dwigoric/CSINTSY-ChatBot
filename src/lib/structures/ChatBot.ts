@@ -57,6 +57,7 @@ const symptomQuestions = Object.freeze({
 	pain_nipple: "Have you experienced any pain or tenderness in your breast or nipple?",
 	chills: "Are you experiencing chills?",
 });
+type Symptom = keyof typeof symptomQuestions;
 
 const symptomsPerDisease = Object.freeze({
 	bacterial_pneumonia: ["fever", "mucus", "fatigue", "shortness_of_breath", "cough"],
@@ -81,13 +82,23 @@ interface PersonalData {
 	systolicBloodPressure: number;
 	diastolicBloodPressure: number;
 	history: FamilyHistory[];
-	accomplishedHistory: boolean;
-	accomplishedLifestyle: boolean;
 	started: boolean;
 
 	counter: number;
-	indicators: (keyof typeof symptomQuestions)[];
-	asked: (keyof typeof symptomQuestions)[];
+	indicators: (
+		Symptom |
+		"needle_accident" |
+		"drug_shared" |
+		"travel" |
+		"smoke" |
+		"multiple_partners" |
+		"unsure_protection" |
+		"unsafe_sex_practices" |
+		"msm" |
+		"contaminated" |
+		"measles_vaccination"
+	)[];
+	asked: Symptom[];
 }
 
 // ------------------ ChatBot ------------------

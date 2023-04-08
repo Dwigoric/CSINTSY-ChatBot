@@ -12,6 +12,9 @@ export class FamilyHistoryHandler extends InteractionHandler {
 	public override parse(interaction: ButtonInteraction) {
 		if (interaction.customId !== 'diagnosis:agree') return this.none();
 
+		const userDir = this.container.client.directory.get(interaction.user.id)!;
+		userDir.started = true;
+
 		return this.some();
 	}
 
@@ -52,10 +55,10 @@ export class FamilyHistoryHandler extends InteractionHandler {
 				})
 			);
 
-		return interaction.reply({
+		return interaction.update({
 			content: 'I will now ask you about the patient\'s family history. Please select all that apply.',
 			components: [actionRow],
-			ephemeral: true
+			embeds: []
 		});
 	}
 }
