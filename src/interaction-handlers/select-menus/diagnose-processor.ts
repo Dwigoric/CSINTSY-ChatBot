@@ -70,10 +70,9 @@ export class DiagnoseProcessHandler extends InteractionHandler {
 			// TODO: Add the diagnosis
 		}).setColor('Random');
 
-		return interaction.reply({
+		return interaction.update({
 			content: "Thank you for that information. We will now proceed to the diagnosis.",
-			embeds: [embed],
-			ephemeral: true,
+			embeds: [embed]
 		});
 	}
 }
