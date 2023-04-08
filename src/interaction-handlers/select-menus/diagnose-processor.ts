@@ -20,7 +20,7 @@ export class DiagnoseProcessHandler extends InteractionHandler {
 
 	public async run(interaction: StringSelectMenuInteraction) {
 		// These are the symptoms selected by the user
-		const symptoms = interaction.values;
+		const symptoms = interaction.values.filter(value => value !== "none") as Array<keyof typeof this.container.client.symptomQuestions>;
 
 		const userDir = this.container.client.directory.get(interaction.user.id)!;
 		userDir.indicators.push(...(symptoms as typeof userDir.indicators));
@@ -70,10 +70,10 @@ export class DiagnoseProcessHandler extends InteractionHandler {
 			// TODO: Add the diagnosis
 		}).setColor('Random');
 
-		return interaction.reply({
+		return interaction.update({
 			content: "Thank you for that information. We will now proceed to the diagnosis.",
 			embeds: [embed],
-			ephemeral: true,
+			components: []
 		});
 	}
 }
