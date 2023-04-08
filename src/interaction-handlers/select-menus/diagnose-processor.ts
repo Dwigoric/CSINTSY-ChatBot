@@ -58,6 +58,11 @@ export class DiagnoseProcessHandler extends InteractionHandler {
 	}
 
 	private async conclude(interaction: StringSelectMenuInteraction) {
+		const symptoms = Object.keys(this.container.client.symptomQuestions) as Array<keyof typeof this.container.client.symptomQuestions>;
+
+		const YES = this.container.client.directory.get(interaction.user.id)!.indicators;
+		const NO = symptoms.filter(symptom => !YES.includes(symptom));
+
 		const embed = new EmbedBuilder({
 			title: "Diagnosis",
 			description: "The diagnosis is..."
