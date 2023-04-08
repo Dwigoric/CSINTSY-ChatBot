@@ -1,6 +1,8 @@
 import { container, SapphireClient } from "@sapphire/framework";
 import { ClientOptions, Snowflake } from "discord.js";
 
+const pl = require("tau-prolog");
+require("tau-prolog/modules/promises.js")(pl);
 
 // ------------------ Prolog ------------------
 interface Session {
@@ -19,7 +21,6 @@ interface Session {
 interface TauPrologInstance {
 	create: (options: { limit: number }) => Session;
 }
-
 
 // ------------------ Personal Data ------------------
 const symptomQuestions = Object.freeze({
@@ -54,7 +55,7 @@ const symptomQuestions = Object.freeze({
 	breast_change: "Have you noticed any changes in the size, shape, or color of your breast or nipple?",
 	blood_discharge: "Have you noticed any blood discharge from your nipple, other than during breastfeeding?",
 	pain_nipple: "Have you experienced any pain or tenderness in your breast or nipple?",
-	chills: "Are you experiencing chills?"
+	chills: "Are you experiencing chills?",
 });
 
 const symptomsPerDisease = Object.freeze({
@@ -67,7 +68,7 @@ const symptomsPerDisease = Object.freeze({
 	uti: ["urge_to_urinate", "burning_sensation", "small_urine", "dark_urine", "fever", "chills"],
 	diabetes: ["thirst", "weight_loss", "hunger", "fatigue"],
 	breast_cancer: ["lumps", "breast_change", "blood_discharge", "pain_nipple", "swole_lymph_nodes"],
-	hiv: ["fever", "weight_loss", "white_spot_or_purple_patch", "fatigue", "muscle_ache", "swole_lymph_nodes", "multi_infections"]
+	hiv: ["fever", "weight_loss", "white_spot_or_purple_patch", "fatigue", "muscle_ache", "swole_lymph_nodes", "multi_infections"],
 });
 
 type FamilyHistory = "high_blood_pressure" | "diabetes" | "uti" | "breast_cancer";
@@ -89,11 +90,9 @@ interface PersonalData {
 	asked: (keyof typeof symptomQuestions)[];
 }
 
-
 // ------------------ ChatBot ------------------
 export default class ChatBot extends SapphireClient {
-	pl: TauPrologInstance;
-	session: Session;
+	session: pl.type.Session;
 	personalData: PersonalData;
 	symptomQuestions: typeof symptomQuestions;
 	symptomsPerDisease: typeof symptomsPerDisease;
@@ -107,7 +106,6 @@ export default class ChatBot extends SapphireClient {
 
 		container.util = require("../util/util");
 
-		this.pl = require("tau-prolog");
 		this.session = this.pl.create({ limit: 1000 });
 		this.symptomQuestions = symptomQuestions;
 		this.symptomsPerDisease = symptomsPerDisease;
@@ -116,8 +114,13 @@ export default class ChatBot extends SapphireClient {
 
 	async start() {}
 
-	getSymptoms(query: string) {
-		this.session.consult("../../knowledgeBase.pro");
+	async getDiagnosis(confirmedSymptoms: string[], unconfirmedSymptoms: string[]) {
+		await this.session.promiseConsult("../../knowledgeBase.pro");
+
+		for (const symptom of confirmedSymptoms) await this.session.promiseQuery(`assert(has(${symptom})).`);
+		for (const symptom of unconfirmedSymptoms) this.session.promiseQuery(`assert(no(${symptom})).`);
+
+		const result = await this.session.promiseQuery(`diagnosis(${this.container.client.name}).`);
 	}
 }
 
@@ -128,7 +131,6 @@ declare module "@sapphire/pieces" {
 }
 
 declare module "@sapphire/framework" {
-
 	interface SapphireClient {
 		pl: TauPrologInstance;
 		session: Session;
@@ -137,7 +139,7 @@ declare module "@sapphire/framework" {
 		symptomsPerDisease: typeof symptomsPerDisease;
 		directory: Map<Snowflake, PersonalData>;
 
-		getSymptoms(query: string): void;
+		getDiagnosis(confirmedSymptoms: string[], unconfirmedSymptoms: string[]): void;
 		setPersonalData(userInput: PersonalData): void;
 		getPersonalData(): PersonalData;
 	}
