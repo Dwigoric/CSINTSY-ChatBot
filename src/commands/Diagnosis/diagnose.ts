@@ -65,9 +65,6 @@ export class DiagnoseCommand extends Command {
 							.setRequired(true)
 							.setMinValue(30)
 							.setMaxValue(360)
-					)
-					.addBooleanOption((option) =>
-						option.setName("smoking").setDescription("Whether the patient to diagnose smokes.").setRequired(true)
 					);
 			},
 			{
