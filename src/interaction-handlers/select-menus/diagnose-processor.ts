@@ -72,7 +72,8 @@ export class DiagnoseProcessHandler extends InteractionHandler {
 
 		return interaction.update({
 			content: "Thank you for that information. We will now proceed to the diagnosis.",
-			embeds: [embed]
+			embeds: [embed],
+			components: []
 		});
 	}
 }
