@@ -20,26 +20,13 @@ interface TauPrologInstance {
 
 type FamilyHistory = "high_blood_pressure" | "diabetes" | "uti" | "breast_cancer";
 interface PersonalData {
-	// Age related
 	age: number;
-	ageGroup: string;
-
 	biologicalSex: string;
-
-	// BMI related
 	height: number;
 	weight: number;
-	bmi: number;
-
-	// Fever related
 	bodyTemperature: number;
-	hasFever: boolean;
-
-	// BP related
 	systolicBloodPressure: number;
 	diastolicBloodPressure: number;
-	highBloodPressure: boolean;
-
 	smoking: boolean;
 	history: FamilyHistory[];
 	accomplishedHistory: boolean;
@@ -67,8 +54,6 @@ export default class ChatBot extends SapphireClient {
 
 	getSymptoms(query: string) {
 		this.session.consult("../../knowledgeBase.pro");
-		this.session.query(query);
-		console.log(this.session.answers);
 	}
 }
 

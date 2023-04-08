@@ -42,14 +42,14 @@ export class DiagnoseCommand extends Command {
 							.setMinValue(0)
 							.setMaxValue(635)
 					)
-                    .addNumberOption((option) =>
-                        option
-                            .setName("body_temperature")
-                            .setDescription("The body temperature of the patient to diagnose (in degrees Celsius).")
-                            .setRequired(true)
-                            .setMinValue(9)
-                            .setMaxValue(46.5)
-                    )
+					.addNumberOption((option) =>
+						option
+							.setName("body_temperature")
+							.setDescription("The body temperature of the patient to diagnose (in degrees Celsius).")
+							.setRequired(true)
+							.setMinValue(9)
+							.setMaxValue(46.5)
+					)
 					.addIntegerOption((option) =>
 						option
 							.setName("systolic_blood_pressure")
@@ -80,31 +80,14 @@ export class DiagnoseCommand extends Command {
 	public async chatInputRun(interaction: Command.ChatInputCommandInteraction) {
 		if (this.container.client.directory.has(interaction.user.id)) return this.handleExistingSession(interaction);
 
-		const ageGroup =
-			(interaction.options.getInteger("age") as number) < 6
-				? "infant"
-				: (interaction.options.getInteger("age") as number) < 5 && (interaction.options.getInteger("age") as number) < 60
-				? "normal"
-				: "old";
-
-		const bmi = Math.ceil((interaction.options.getNumber("weight") as number) / ((interaction.options.getNumber("height") as number) / 100) ** 2);
-		const highBloodPressure =
-			(interaction.options.getInteger("systolic_blood_pressure") as number) > 140 ||
-			(interaction.options.getInteger("diastolic_blood_pressure") as number) > 90;
-		const hasFever = (interaction.options.getNumber("bodyTemp") as number) > 38;
-
 		const personalData = {
 			age: interaction.options.getInteger("age") as number,
-			ageGroup: ageGroup,
 			biologicalSex: interaction.options.getString("biological_sex") as string,
 			height: interaction.options.getNumber("height") as number,
 			weight: interaction.options.getNumber("weight") as number,
-			bmi: bmi,
 			bodyTemperature: interaction.options.getNumber("body_temp") as number,
-			hasFever: hasFever,
 			systolicBloodPressure: interaction.options.getInteger("systolic_blood_pressure") as number,
 			diastolicBloodPressure: interaction.options.getInteger("diastolic_blood_pressure") as number,
-			highBloodPressure: highBloodPressure,
 			smoking: interaction.options.getBoolean("smoking") as boolean,
 			history: [],
 			accomplishedHistory: false,
