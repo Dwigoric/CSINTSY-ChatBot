@@ -52,10 +52,9 @@ export class DiagnoseProcessHandler extends InteractionHandler {
 			})
 		);
 
-		return interaction.reply({
+		return interaction.update({
 			content: "Please select the symptom you are experiencing.",
-			components: [actionRow],
-			ephemeral: true,
+			components: [actionRow]
 		});
 	}
 

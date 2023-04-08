@@ -86,13 +86,12 @@ export class DiagnoseCommand extends Command {
 			systolicBloodPressure: interaction.options.getInteger("systolic_blood_pressure")!,
 			diastolicBloodPressure: interaction.options.getInteger("diastolic_blood_pressure")!,
 			history: [],
-			accomplishedHistory: false,
-			accomplishedLifestyle: false,
 			started: false,
 
 			counter: 0,
 			indicators: [],
-			asked: []
+			asked: [],
+			finishedSections: []
 		};
 
 		this.container.client.directory.set(interaction.user.id, personalData);
