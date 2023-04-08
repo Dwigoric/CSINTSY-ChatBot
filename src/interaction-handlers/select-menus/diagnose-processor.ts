@@ -32,7 +32,9 @@ export class DiagnoseProcessHandler extends InteractionHandler {
 		if (counter >= Object.keys(this.container.client.symptomsPerDisease).length) return this.conclude(interaction);
 
 		const diseases = Object.keys(this.container.client.symptomsPerDisease) as Array<keyof typeof this.container.client.symptomsPerDisease>;
-		const nextSymptoms = this.container.util.parseDiseaseSymptoms(diseases[counter]);
+		const nextSymptoms = this.container.util.parseDiseaseSymptoms(diseases[counter])
+			.filter(symptom => !userDir.asked.includes(symptom.value));
+		userDir.asked.push(...nextSymptoms.map(symptom => symptom.value));
 
 		const actionRow = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
 			new StringSelectMenuBuilder({

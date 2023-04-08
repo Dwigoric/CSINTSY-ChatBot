@@ -32,6 +32,7 @@ export class DiagnosisInitializer extends InteractionHandler {
 
 		const diseases = Object.keys(this.container.client.symptomsPerDisease) as Array<keyof typeof this.container.client.symptomsPerDisease>;
 		const initialSymptoms = this.container.util.parseDiseaseSymptoms(diseases[0]);
+		userDir.asked.push(...initialSymptoms.map(symptom => symptom.value));
 
 		const actionRow = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
 			new StringSelectMenuBuilder({
