@@ -32,9 +32,8 @@ export class DiagnoseProcessHandler extends InteractionHandler {
 		if (counter >= Object.keys(this.container.client.symptomsPerDisease).length) return this.conclude(interaction);
 
 		const diseases = Object.keys(this.container.client.symptomsPerDisease) as Array<keyof typeof this.container.client.symptomsPerDisease>;
-		const nextSymptoms = this.container.util.parseDiseaseSymptoms(diseases[counter])
-			.filter(symptom => !userDir.asked.includes(symptom.value));
-		userDir.asked.push(...nextSymptoms.map(symptom => symptom.value));
+		const nextSymptoms = this.container.util.parseDiseaseSymptoms(diseases[counter]).filter((symptom) => !userDir.asked.includes(symptom.value));
+		userDir.asked.push(...nextSymptoms.map((symptom) => symptom.value));
 
 		const actionRow = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
 			new StringSelectMenuBuilder({
@@ -46,15 +45,15 @@ export class DiagnoseProcessHandler extends InteractionHandler {
 					{
 						label: "NOTA",
 						description: "None of the above.",
-						value: "none"
-					}
+						value: "none",
+					},
 				],
 			})
 		);
 
 		return interaction.update({
 			content: "Please select the symptom you are experiencing.",
-			components: [actionRow]
+			components: [actionRow],
 		});
 	}
 
@@ -62,13 +61,15 @@ export class DiagnoseProcessHandler extends InteractionHandler {
 		const symptoms = Object.keys(this.container.client.symptomQuestions) as Array<keyof typeof this.container.client.symptomQuestions>;
 
 		const YES = this.container.client.directory.get(interaction.user.id)!.indicators;
-		const NO = symptoms.filter(symptom => !YES.includes(symptom));
+		const NO = symptoms.filter((symptom) => !YES.includes(symptom));
+		const user = this.container.client.directory.get(interaction.user.id)!;
+		const finalDiagnosis = await this.container.client.getDiagnosis(YES, NO, user);
 
 		const embed = new EmbedBuilder({
 			title: "Diagnosis",
-			description: "The diagnosis is..."
+			description: "The diagnosis is...",
 			// TODO: Add the diagnosis
-		}).setColor('Random');
+		}).setColor("Random");
 
 		return interaction.reply({
 			content: "Thank you for that information. We will now proceed to the diagnosis.",
