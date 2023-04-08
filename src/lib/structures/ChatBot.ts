@@ -86,6 +86,7 @@ interface PersonalData {
 
 	counter: number;
 	indicators: (keyof typeof symptomQuestions)[];
+	asked: (keyof typeof symptomQuestions)[];
 }
 
 

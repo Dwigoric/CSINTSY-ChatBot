@@ -91,7 +91,8 @@ export class DiagnoseCommand extends Command {
 			started: false,
 
 			counter: 0,
-			indicators: []
+			indicators: [],
+			asked: []
 		};
 
 		this.container.client.directory.set(interaction.user.id, personalData);
