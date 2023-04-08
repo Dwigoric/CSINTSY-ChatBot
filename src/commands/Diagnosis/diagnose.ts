@@ -85,10 +85,10 @@ export class DiagnoseCommand extends Command {
 			bodyTemperature: interaction.options.getNumber("body_temp")!,
 			systolicBloodPressure: interaction.options.getInteger("systolic_blood_pressure")!,
 			diastolicBloodPressure: interaction.options.getInteger("diastolic_blood_pressure")!,
-			smoking: interaction.options.getBoolean("smoking")!,
 			history: [],
 			accomplishedHistory: false,
-			started: false,
+			accomplishedLifestyle: false,
+			started: false
 		};
 
 		this.container.client.directory.set(interaction.user.id, personalData);

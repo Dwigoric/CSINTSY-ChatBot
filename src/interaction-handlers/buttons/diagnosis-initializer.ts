@@ -10,19 +10,12 @@ export class DiagnosisInitializer extends InteractionHandler {
 	}
 
 	public override parse(interaction: StringSelectMenuInteraction) {
-		if (interaction.customId !== "diagnosis:history") return this.none();
+		if (interaction.customId !== "diagnosis:lifestyle") return this.none();
 
-		const userDir = this.container.client.directory.get(interaction.user.id);
-		if (!userDir) {
+		const userDir = this.container.client.directory.get(interaction.user.id)!;
+		if (userDir.accomplishedLifestyle) {
 			interaction.reply({
-				content: "Your session was not found. Please start a new session.",
-				ephemeral: true,
-			});
-			return this.none();
-		}
-		if (userDir.accomplishedHistory) {
-			interaction.reply({
-				content: "You have already accomplished the family history section.",
+				content: "You have already accomplished the lifestyle section.",
 				ephemeral: true,
 			});
 			return this.none();
@@ -32,16 +25,10 @@ export class DiagnosisInitializer extends InteractionHandler {
 	}
 
 	public async run(interaction: StringSelectMenuInteraction) {
-		// Handle family history
-		type FamilyHistory = "high_blood_pressure" | "diabetes" | "uti" | "breast_cancer";
-
 		const userDir = this.container.client.directory.get(interaction.user.id)!;
-		userDir.started = true; // Mark the session as started
-		userDir.history = interaction.values.filter((value) => value !== "none") as FamilyHistory[];
-		userDir.accomplishedHistory = true;
+		userDir.accomplishedLifestyle = true;
 
-		// TODO: Pass the family history to prolog
-		console.log(userDir.history);
+		// TODO: Add lifestyles as symptoms to the user directory
 
 		// Initiate the flow of the diagnosis
 		const actionRow = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(

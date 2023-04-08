@@ -27,9 +27,9 @@ interface PersonalData {
 	bodyTemperature: number;
 	systolicBloodPressure: number;
 	diastolicBloodPressure: number;
-	smoking: boolean;
 	history: FamilyHistory[];
 	accomplishedHistory: boolean;
+	accomplishedLifestyle: boolean;
 	started: boolean;
 }
 
