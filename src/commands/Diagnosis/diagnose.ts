@@ -88,7 +88,9 @@ export class DiagnoseCommand extends Command {
 			history: [],
 			accomplishedHistory: false,
 			accomplishedLifestyle: false,
-			started: false
+			started: false,
+
+			indicators: []
 		};
 
 		this.container.client.directory.set(interaction.user.id, personalData);
