@@ -23,7 +23,7 @@ export class DiagnosisInitializer extends InteractionHandler {
 		const initialSymptoms = this.container.util.parseDiseaseSymptoms(diseases[0]);
 
 		const userDir = this.container.client.directory.get(interaction.user.id)!;
-		userDir.asked.push(...initialSymptoms.map(symptom => symptom.value));
+		userDir.asked.push(...initialSymptoms.map((symptom) => symptom.value));
 
 		const actionRow = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
 			new StringSelectMenuBuilder({
@@ -35,7 +35,7 @@ export class DiagnosisInitializer extends InteractionHandler {
 					{
 						label: "NOTA",
 						description: "None of the above.",
-						value: "none"
+						value: "none",
 					},
 				],
 			})
@@ -43,7 +43,7 @@ export class DiagnosisInitializer extends InteractionHandler {
 
 		return interaction.update({
 			content: "Thank you for that information. To start, select all symptoms that the patient is experiencing.",
-			components: [actionRow]
+			components: [actionRow],
 		});
 	}
 }
