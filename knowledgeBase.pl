@@ -29,7 +29,7 @@ setAge(X):-
     (X > 59 -> assert(age(old)))).
 setGender(Y):-
     ((Y==m -> assert(gender(male)));
-    (Y==f-> assert(gender(female))))    .
+    (Y==f-> assert(gender(female)))).
 setBodyTemp(Z):-
     (Z>=38 -> assert(has(fever));
     Z<38 -> assert(no(fever))).
