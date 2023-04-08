@@ -1,11 +1,10 @@
 import { container, SapphireClient } from "@sapphire/framework";
 import { ClientOptions, Snowflake } from "discord.js";
 
-const pl = require("tau-prolog");
-require("tau-prolog/modules/promises.js")(pl);
-
 // ------------------ Prolog ------------------
 interface Session {
+	promiseConsult(arg0: string): unknown;
+	promiseQuery(arg0: string): unknown;
 	consult: (code: string) => void;
 	query: (code: string) => {
 		solution: () => {
@@ -86,24 +85,25 @@ interface PersonalData {
 
 	counter: number;
 	indicators: (
-		Symptom |
-		"needle_accident" |
-		"drug_shared" |
-		"travel" |
-		"smoke" |
-		"multiple_partners" |
-		"unsure_protection" |
-		"unsafe_sex_practices" |
-		"msm" |
-		"contaminated" |
-		"measles_vaccination"
+		| Symptom
+		| "needle_accident"
+		| "drug_shared"
+		| "travel"
+		| "smoke"
+		| "multiple_partners"
+		| "unsure_protection"
+		| "unsafe_sex_practices"
+		| "msm"
+		| "contaminated"
+		| "measles_vaccination"
 	)[];
 	asked: Symptom[];
 }
 
 // ------------------ ChatBot ------------------
 export default class ChatBot extends SapphireClient {
-	session: pl.type.Session;
+	pl: TauPrologInstance;
+	session: Session;
 	personalData: PersonalData;
 	symptomQuestions: typeof symptomQuestions;
 	symptomsPerDisease: typeof symptomsPerDisease;
@@ -111,11 +111,15 @@ export default class ChatBot extends SapphireClient {
 	// Snowflake is a string, but it's a string of numbers.
 	// ChatBot#sessions is a map of user IDs to their personal data.
 	directory: Map<Snowflake, PersonalData>;
+	container: any;
 
 	constructor(options: ClientOptions) {
 		super(options);
 
 		container.util = require("../util/util");
+
+		const pl = require("tau-prolog");
+		require("tau-prolog/modules/promises.js")(pl);
 
 		this.session = this.pl.create({ limit: 1000 });
 		this.symptomQuestions = symptomQuestions;
@@ -126,12 +130,18 @@ export default class ChatBot extends SapphireClient {
 	async start() {}
 
 	async getDiagnosis(confirmedSymptoms: string[], unconfirmedSymptoms: string[]) {
-		await this.session.promiseConsult("../../knowledgeBase.pro");
+		try {
+			await this.session.promiseConsult("../../knowledgeBase.pro");
 
-		for (const symptom of confirmedSymptoms) await this.session.promiseQuery(`assert(has(${symptom})).`);
-		for (const symptom of unconfirmedSymptoms) this.session.promiseQuery(`assert(no(${symptom})).`);
+			for (const symptom of confirmedSymptoms) await this.session.promiseQuery(`assert(has(${symptom})).`);
+			for (const symptom of unconfirmedSymptoms) await this.session.promiseQuery(`assert(no(${symptom})).`);
 
-		const result = await this.session.promiseQuery(`diagnosis(${this.container.client.name}).`);
+			const result = await this.session.promiseQuery(`diagnosis(patient).`);
+
+			console.log(result);
+		} catch (error) {
+			console.error(error);
+		}
 	}
 }
 
