@@ -1,5 +1,18 @@
-import { InteractionHandler, InteractionHandlerTypes, PieceContext } from "@sapphire/framework";
+import { InteractionHandler, InteractionHandlerTypes, PieceContext, container } from "@sapphire/framework";
 import { ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuInteraction } from "discord.js";
+
+const symptomsPerDisease: Readonly<{ (P: string): keyof (typeof container.client.symptomQuestions) }> = Object.freeze({
+	bacterial_pneumonia: ["fever", "mucus", "fatigue", "shortness_of_breath", "cough"],
+	tuberculosis: ["cough", "weight_loss", "afternoon_sweats", "swole_lymph_nodes"],
+	measles: ["fever", "rash", "red_eyes", "respiratory"],
+	hypertension: ["kidney", "headache"],
+	gastroenteritis: ["fever", "chills", "nausea_or_vomiting", "diarrhea", "abdominal"],
+	dengue: ["fever", "malaise", "rash", "nausea_or_vomiting", "bleeding"],
+	uti: ["urge_to_urinate", "burning_sensation", "small_urine", "dark_urine", "fever", "chills"],
+	diabetes: ["thirst", "weight_loss", "hunger", "fatigue"],
+	breast_cancer: ["lumps", "breast_change", "blood_discharge", "pain_nipple", "swole_lymph_nodes"],
+	hiv: ["fever", "weight_loss", "white_spot", "purple_patch", "fatigue", "muscle_ache", "swole_lymph_nodes", "multi_infections"]
+});
 
 export class DiagnoseProcessHandler extends InteractionHandler {
 	public constructor(context: PieceContext, options: InteractionHandler.Options) {
