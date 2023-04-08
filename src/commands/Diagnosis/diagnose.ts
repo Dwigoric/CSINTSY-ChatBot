@@ -85,7 +85,7 @@ export class DiagnoseCommand extends Command {
 			biologicalSex: interaction.options.getString("biological_sex")!,
 			height: interaction.options.getNumber("height")!,
 			weight: interaction.options.getNumber("weight")!,
-			bodyTemperature: interaction.options.getNumber("body_temp")!,
+			bodyTemperature: interaction.options.getNumber("body_temperature")!,
 			systolicBloodPressure: interaction.options.getInteger("systolic_blood_pressure")!,
 			diastolicBloodPressure: interaction.options.getInteger("diastolic_blood_pressure")!,
 			history: [],
