@@ -65,9 +65,6 @@ export class DiagnoseCommand extends Command {
 							.setRequired(true)
 							.setMinValue(30)
 							.setMaxValue(360)
-					)
-					.addBooleanOption((option) =>
-						option.setName("smoking").setDescription("Whether the patient to diagnose smokes.").setRequired(true)
 					);
 			},
 			{
@@ -81,17 +78,20 @@ export class DiagnoseCommand extends Command {
 		if (this.container.client.directory.has(interaction.user.id)) return this.handleExistingSession(interaction);
 
 		const personalData = {
-			age: interaction.options.getInteger("age") as number,
-			biologicalSex: interaction.options.getString("biological_sex") as string,
-			height: interaction.options.getNumber("height") as number,
-			weight: interaction.options.getNumber("weight") as number,
-			bodyTemperature: interaction.options.getNumber("body_temp") as number,
-			systolicBloodPressure: interaction.options.getInteger("systolic_blood_pressure") as number,
-			diastolicBloodPressure: interaction.options.getInteger("diastolic_blood_pressure") as number,
-			smoking: interaction.options.getBoolean("smoking") as boolean,
+			age: interaction.options.getInteger("age")!,
+			biologicalSex: interaction.options.getString("biological_sex")!,
+			height: interaction.options.getNumber("height")!,
+			weight: interaction.options.getNumber("weight")!,
+			bodyTemperature: interaction.options.getNumber("body_temp")!,
+			systolicBloodPressure: interaction.options.getInteger("systolic_blood_pressure")!,
+			diastolicBloodPressure: interaction.options.getInteger("diastolic_blood_pressure")!,
 			history: [],
 			accomplishedHistory: false,
+			accomplishedLifestyle: false,
 			started: false,
+
+			counter: 0,
+			indicators: []
 		};
 
 		this.container.client.directory.set(interaction.user.id, personalData);
