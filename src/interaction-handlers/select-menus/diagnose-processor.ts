@@ -20,7 +20,7 @@ export class DiagnoseProcessHandler extends InteractionHandler {
 
 	public async run(interaction: StringSelectMenuInteraction) {
 		// These are the symptoms selected by the user
-		const symptoms = interaction.values.filter(value => value !== "none") as Array<keyof typeof this.container.client.symptomQuestions>;
+		const symptoms = interaction.values.filter((value) => value !== "none") as Array<keyof typeof this.container.client.symptomQuestions>;
 
 		const userDir = this.container.client.directory.get(interaction.user.id)!;
 		userDir.indicators.push(...(symptoms as typeof userDir.indicators));
@@ -63,7 +63,9 @@ export class DiagnoseProcessHandler extends InteractionHandler {
 		const YES = this.container.client.directory.get(interaction.user.id)!.indicators;
 		const NO = symptoms.filter((symptom) => !YES.includes(symptom));
 		const user = this.container.client.directory.get(interaction.user.id)!;
-		const finalDiagnosis = await this.container.client.getDiagnosis(YES, NO, user);
+		await this.container.client.getDiagnosis(YES, NO, user, interaction.user.id);
+
+		console.log(this.container.client.directory.get(interaction.user.id)!.diagnosis);
 
 		const embed = new EmbedBuilder({
 			title: "Diagnosis",
@@ -74,7 +76,7 @@ export class DiagnoseProcessHandler extends InteractionHandler {
 		return interaction.update({
 			content: "Thank you for that information. We will now proceed to the diagnosis.",
 			embeds: [embed],
-			components: []
+			components: [],
 		});
 	}
 }

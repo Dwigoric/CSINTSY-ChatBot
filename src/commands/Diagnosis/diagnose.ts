@@ -95,6 +95,7 @@ export class DiagnoseCommand extends Command {
 			indicators: [],
 			asked: [],
 			finishedSections: [],
+			diagnosis: [],
 		};
 
 		this.container.client.directory.set(interaction.user.id, personalData);

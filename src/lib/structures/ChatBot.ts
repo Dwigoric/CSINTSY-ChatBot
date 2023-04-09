@@ -2,20 +2,27 @@ import { container, SapphireClient } from "@sapphire/framework";
 import { ClientOptions, Snowflake } from "discord.js";
 
 import program from "../../knowledgeBase";
+const pl = require("tau-prolog");
+require("tau-prolog/modules/promises.js")(pl);
+require("tau-prolog/modules/lists.js")(pl);
+
+const session = pl.create({ limit: 1000 });
 
 // ------------------ Prolog ------------------
 interface Session {
+	answers(arg0: (answer: any) => void): unknown;
 	answer(arg0: { success: (answer: any) => void }): unknown;
-	query(goal: string, arg1: { success: (goal: any) => void }): unknown;
+	query(goal: string, arg1: { success: (goal: any) => void; error: (err: any) => void }): unknown;
 	promiseAnswer(): Promise<void>;
 	promiseAnswers(): any;
 	format_answer(answer: any): any;
 	promiseConsult(arg0: string): unknown;
 	promiseQuery(arg0: string): unknown;
-	consult: (code: string) => void;
+	consult: (code: string, arg1: Object) => unknown;
 }
 
 interface TauPrologInstance {
+	type: any;
 	create: (options: { limit: number }) => Session;
 }
 
@@ -96,12 +103,11 @@ interface PersonalData {
 		| "measles_vaccination"
 	)[];
 	asked: Symptom[];
+	diagnosis: string[];
 }
 
 // ------------------ ChatBot ------------------
 export default class ChatBot extends SapphireClient {
-	pl: TauPrologInstance;
-	session: Session;
 	personalData: PersonalData;
 	symptomQuestions: typeof symptomQuestions;
 	symptomsPerDisease: typeof symptomsPerDisease;
@@ -116,11 +122,6 @@ export default class ChatBot extends SapphireClient {
 
 		container.util = require("../util/util");
 
-		this.pl = require("tau-prolog");
-		require("tau-prolog/modules/promises.js")(this.pl);
-		require("tau-prolog/modules/lists.js")(this.pl);
-
-		this.session = this.pl.create({ limit: 1000 });
 		this.symptomQuestions = symptomQuestions;
 		this.symptomsPerDisease = symptomsPerDisease;
 		this.directory = new Map();
@@ -128,7 +129,7 @@ export default class ChatBot extends SapphireClient {
 
 	async start() {}
 
-	async getDiagnosis(confirmedSymptoms: string[], unconfirmedSymptoms: string[], user: PersonalData) {
+	async getDiagnosis(confirmedSymptoms: string[], unconfirmedSymptoms: string[], user: PersonalData, userId: string) {
 		let queryString = "";
 
 		const ageGoal = `setAge(${user.age}).`;
@@ -149,29 +150,78 @@ export default class ChatBot extends SapphireClient {
 		}
 
 		try {
-			queryString += `diagnose(Patient).`;
+			queryString += `diagnose(Patient).diagnosis(Patient,X).`;
+
 			// console.log(queryString);
 
-			await this.session.promiseConsult(program);
-			// await this.session.promiseQuery(queryString);
-			// await this.session.promiseQuery(`diagnosis(Patient,X).`);
+			let answers: string[] = [];
+			session.consult(program, {
+				success: () => {
+					session.query(queryString, {
+						success: () => {
+							session.answer({
+								success: (answer: any) => {
+									answers.push(session.format_answer(answer));
 
-			this.session.query(queryString, {
-				success: (answer: any) => {
-					this.session.query(`diagnosis(Patient,X).`, {
-						success: (answer: any) => {
-							console.log(this.session.format_answer(answer));
+									// console.log(`Answer: ${answers}`);
+
+									this.directory.get(userId)!.diagnosis = answers;
+								},
+							});
 						},
 					});
 				},
 			});
 
-			// const answer = await this.session.promiseAnswer();
-			// console.log(this.session.format_answer(answer));
+			// await this.session.promiseConsult(program);
+			// await this.session.promiseQuery(queryString);
 
-			// var show = function (answer: any) {
-			// 	console.log(this.session.format_answer(answer));
+			// this.session.query(queryString, {
+			// 	success: function (goal) {
+			// 		console.log(`Goal queried successfully: ${goal}`);
+
+			// 		this.session.answer({
+			// 			success: function (answer: any) {
+			// 				console.log(`Answer: ${answer}`);
+			// 			},
+			// 			error: function (err: any) {
+			// 				console.log(`Error: ${err}`);
+			// 			},
+			// 			fail: function () {
+			// 				console.log(`Fail`);
+			// 			},
+			// 			limit: function () {
+			// 				console.log(`Limit`);
+			// 			},
+			// 		});
+			// 	},
+			// 	error: function (err: any) {
+			// 		console.log(`Error in querying goal: ${err}`);
+			// 	},
+			// });
+
+			// this.session.query(queryString, {
+			// 	success: (answer: any) => {
+			// 		this.session.query(`diagnosis(Patient,X), write(X).`, {
+			// 			success: (answer: any) => {
+			// 				console.log(this.session.format_answer(answer));
+			// 			},
+			// 		});
+			// 	},
+			// });
+
+			// for await (const answer of this.session.promiseAnswers()) console.log(this.session.format_answer(answer));
+
+			// var show = (name: string, answers: any) => {
+			// 	if (this.pl.type.is_substitution(answers)) {
+			// 		let disease = answers.lookup("X");
+			// 		console.log(`${name} may have ${disease}.`);
+			// 	}
 			// };
+
+			// this.session.answers((answers) => {
+			// 	show("Patient", answers);
+			// });
 
 			// this.session.answer({
 			// 	success: function (answer) {
@@ -206,7 +256,7 @@ declare module "@sapphire/framework" {
 		symptomsPerDisease: typeof symptomsPerDisease;
 		directory: Map<Snowflake, PersonalData>;
 
-		getDiagnosis(confirmedSymptoms: string[], unconfirmedSymptoms: string[], user: PersonalData): Promise<void>;
+		getDiagnosis(confirmedSymptoms: string[], unconfirmedSymptoms: string[], user: PersonalData, userId: string): Promise<void>;
 		setPersonalData(userInput: PersonalData): void;
 		getPersonalData(): PersonalData;
 	}
