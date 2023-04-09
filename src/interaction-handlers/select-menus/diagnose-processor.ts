@@ -67,26 +67,7 @@ export class DiagnoseProcessHandler extends InteractionHandler {
         const YES = this.container.client.directory.get(interaction.user.id)!.indicators;
         const NO = symptoms.filter((symptom) => !YES.includes(symptom));
         const user = this.container.client.directory.get(interaction.user.id)!;
-        await this.container.client.getDiagnosis(YES, NO, user, interaction.user.id);
 
-        // const diagnosis = this.container.client.directory.get(interaction.user.id)!.diagnosis;
-
-        // console.log(diagnosis);
-
-        const embed = new EmbedBuilder({
-            title: "Diagnosis",
-            description: `You have a ${this.container.client.directory.get(interaction.user.id)!.diagnosis.certainty}% chance of having ${
-                this.container.client.directory.get(interaction.user.id)!.diagnosis.disease
-            }.`,
-        }).setColor("Random");
-
-        // Delete the user's directory
-        this.container.client.directory.delete(interaction.user.id);
-
-        return interaction.update({
-            content: "Thank you for that information. Here's your diagnosis. Your data has been deleted from memory.",
-            embeds: [embed],
-            components: [],
-        });
+        await this.container.client.getDiagnosis(YES, NO, user, interaction.user.id, interaction);
     }
 }
