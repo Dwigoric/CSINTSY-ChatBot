@@ -67,8 +67,11 @@ export class DiagnoseProcessHandler extends InteractionHandler {
 			// TODO: Add the diagnosis
 		}).setColor("Random");
 
+		// Delete the user's directory
+		this.container.client.directory.delete(interaction.user.id);
+
 		return interaction.update({
-			content: "Thank you for that information. We will now proceed to the diagnosis.",
+			content: "Thank you for that information. Here's your diagnosis. Your data has been deleted from memory.",
 			embeds: [embed],
 			components: []
 		});
