@@ -11,9 +11,6 @@ export class DiagnoseProcessHandler extends InteractionHandler {
 
 	public override parse(interaction: StringSelectMenuInteraction) {
 		if (!interaction.customId.startsWith("diagnosis:flow")) return this.none();
-		const counter = parseInt(interaction.customId.slice(-1), 10);
-		const userDir = this.container.client.directory.get(interaction.user.id)!;
-		if (userDir.counter !== counter) return this.none();
 
 		return this.some();
 	}
@@ -25,8 +22,7 @@ export class DiagnoseProcessHandler extends InteractionHandler {
 		const userDir = this.container.client.directory.get(interaction.user.id)!;
 		userDir.indicators.push(...(symptoms as typeof userDir.indicators));
 
-		userDir.counter++;
-		const { counter } = userDir;
+		const counter = parseInt(interaction.customId.slice(-1), 10) + 1;
 
 		// All diseases have been queried
 		if (counter >= Object.keys(this.container.client.symptomsPerDisease).length) return this.conclude(interaction);
