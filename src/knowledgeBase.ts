@@ -15,7 +15,9 @@ diagnose(Person):-
 	findall(Disease,diag(Disease),_),
 	findMostLikely(_,MostLikelyList),
 	assertz(diagnosis(Person,MostLikelyList)),
-	undo.
+	undo,
+    take(1, MostLikelyList, FirstDiagnosis),
+	write(FirstDiagnosis).
 
 setAge(X):-
 	(( X< 6 -> assertz(age(infant)));
