@@ -2,18 +2,19 @@ import { InteractionHandler, InteractionHandlerTypes, PieceContext } from "@sapp
 import { ActionRowBuilder, EmbedBuilder, StringSelectMenuBuilder, StringSelectMenuInteraction } from "discord.js";
 
 export class DiagnoseProcessHandler extends InteractionHandler {
+	private readonly BASE_ID: string;
+
 	public constructor(context: PieceContext, options: InteractionHandler.Options) {
 		super(context, {
 			...options,
 			interactionHandlerType: InteractionHandlerTypes.SelectMenu,
 		});
+
+		Object.defineProperty(this, "BASE_ID", { configurable: false, writable: false, value: "diagnosis:flow" });
 	}
 
 	public override parse(interaction: StringSelectMenuInteraction) {
-		if (!interaction.customId.startsWith("diagnosis:flow")) return this.none();
-		const counter = parseInt(interaction.customId.slice(-1), 10);
-		const userDir = this.container.client.directory.get(interaction.user.id)!;
-		if (userDir.counter !== counter) return this.none();
+		if (!interaction.customId.startsWith(this.BASE_ID)) return this.none();
 
 		return this.some();
 	}
@@ -25,8 +26,7 @@ export class DiagnoseProcessHandler extends InteractionHandler {
 		const userDir = this.container.client.directory.get(interaction.user.id)!;
 		userDir.indicators.push(...(symptoms as typeof userDir.indicators));
 
-		userDir.counter++;
-		const { counter } = userDir;
+		const counter = parseInt(interaction.customId.slice(this.BASE_ID.length + 1), 10) + 1;
 
 		// All diseases have been queried
 		if (counter >= Object.keys(this.container.client.symptomsPerDisease).length) return this.conclude(interaction);
@@ -37,7 +37,7 @@ export class DiagnoseProcessHandler extends InteractionHandler {
 
 		const actionRow = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
 			new StringSelectMenuBuilder({
-				custom_id: `diagnosis:flow-${counter}`,
+				custom_id: `${this.BASE_ID}-${counter}`,
 				placeholder: "What's wrong?",
 				max_values: nextSymptoms.length,
 				options: [
@@ -52,8 +52,8 @@ export class DiagnoseProcessHandler extends InteractionHandler {
 		);
 
 		return interaction.update({
-			content: "Please select the symptom you are experiencing.",
-			components: [actionRow],
+			content: "Select all symptoms that the patient is experiencing.",
+			components: [actionRow]
 		});
 	}
 
@@ -73,8 +73,11 @@ export class DiagnoseProcessHandler extends InteractionHandler {
 			// TODO: Add the diagnosis
 		}).setColor("Random");
 
+		// Delete the user's directory
+		this.container.client.directory.delete(interaction.user.id);
+
 		return interaction.update({
-			content: "Thank you for that information. We will now proceed to the diagnosis.",
+			content: "Thank you for that information. Here's your diagnosis. Your data has been deleted from memory.",
 			embeds: [embed],
 			components: [],
 		});

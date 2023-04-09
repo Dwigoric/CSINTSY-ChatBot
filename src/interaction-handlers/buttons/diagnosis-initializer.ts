@@ -1,24 +1,26 @@
 import { InteractionHandler, InteractionHandlerTypes, PieceContext } from "@sapphire/framework";
-import { ActionRowBuilder, StringSelectMenuBuilder, ButtonInteraction } from "discord.js";
+import { ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuInteraction } from "discord.js";
 
 export class DiagnosisInitializer extends InteractionHandler {
 	public constructor(context: PieceContext, options: InteractionHandler.Options) {
 		super(context, {
 			...options,
-			interactionHandlerType: InteractionHandlerTypes.Button,
+			interactionHandlerType: InteractionHandlerTypes.SelectMenu,
 		});
 	}
 
-	public override parse(interaction: ButtonInteraction) {
-		if (!interaction.customId.startsWith("diagnosis:measles")) return this.none();
+	public override parse(interaction: StringSelectMenuInteraction) {
+		if (!interaction.customId.startsWith("diagnosis:history")) return this.none();
+
+		type FamilyHistory = "high_blood_pressure" | "diabetes" | "uti" | "breast_cancer";
 
 		const userDir = this.container.client.directory.get(interaction.user.id)!;
-		if (interaction.customId.slice(-1) === "y") userDir.indicators.push("measles_vaccination");
+		userDir.history = interaction.values.filter((value) => value !== "none") as FamilyHistory[];
 
 		return this.some();
 	}
 
-	public async run(interaction: ButtonInteraction) {
+	public async run(interaction: StringSelectMenuInteraction) {
 		const diseases = Object.keys(this.container.client.symptomsPerDisease) as Array<keyof typeof this.container.client.symptomsPerDisease>;
 		const initialSymptoms = this.container.util.parseDiseaseSymptoms(diseases[0]);
 
@@ -42,7 +44,7 @@ export class DiagnosisInitializer extends InteractionHandler {
 		);
 
 		return interaction.update({
-			content: "Thank you for that information. To start, select all symptoms that the patient is experiencing.",
+			content: "Thank you for that information. Now, select all symptoms that the patient is experiencing.",
 			components: [actionRow],
 		});
 	}

@@ -75,7 +75,12 @@ export class DiagnoseCommand extends Command {
 	}
 
 	public async chatInputRun(interaction: Command.ChatInputCommandInteraction) {
-		if (this.container.client.directory.has(interaction.user.id)) return this.handleExistingSession(interaction);
+		if (this.container.client.directory.has(interaction.user.id)) {
+			return interaction.reply({
+				content: "You already have an active session.",
+				ephemeral: true,
+			});
+		}
 
 		// const user = this.container.client.directory.get(interaction.user.id)!;
 		// const finalDiagnosis = await this.container.client.getDiagnosis(["w"], ["vv"], user);
@@ -142,23 +147,6 @@ export class DiagnoseCommand extends Command {
 					],
 				}).setColor("Random"),
 			],
-			components: [actionRow],
-			ephemeral: true,
-		});
-	}
-
-	private async handleExistingSession(interaction: Command.ChatInputCommandInteraction) {
-		const actionRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
-			new ButtonBuilder({
-				custom_id: "diagnosis:existing",
-				label: "Delete existing session",
-				emoji: "🗑",
-				style: ButtonStyle.Danger,
-			})
-		);
-
-		return interaction.reply({
-			content: "You already have an active session. Would you like to delete it?",
 			components: [actionRow],
 			ephemeral: true,
 		});

@@ -88,7 +88,6 @@ interface PersonalData {
 	history: FamilyHistory[];
 	started: boolean;
 
-	counter: number;
 	indicators: (
 		| Symptom
 		| "needle_accident"
