@@ -49,7 +49,7 @@ export class DiagnoseProcessHandler extends InteractionHandler {
 		);
 
 		return interaction.update({
-			content: "Please select the symptom you are experiencing.",
+			content: "Select all symptoms that the patient is experiencing.",
 			components: [actionRow]
 		});
 	}
