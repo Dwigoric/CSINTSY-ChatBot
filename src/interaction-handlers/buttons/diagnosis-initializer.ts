@@ -15,7 +15,7 @@ export class DiagnosisInitializer extends InteractionHandler {
 		type FamilyHistory = "high_blood_pressure" | "diabetes" | "uti" | "breast_cancer";
 
 		const userDir = this.container.client.directory.get(interaction.user.id)!;
-		userDir.history = interaction.values.filter((value) => value !== "none") as FamilyHistory[];
+		userDir.indicators.push(...(interaction.values.filter((value) => value !== "none") as FamilyHistory[]))
 
 		return this.some();
 	}

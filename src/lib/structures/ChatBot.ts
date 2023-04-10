@@ -84,10 +84,10 @@ interface PersonalData {
     bodyTemperature: number;
     systolicBloodPressure: number;
     diastolicBloodPressure: number;
-    history: FamilyHistory[];
     started: boolean;
 
     indicators: (
+        | FamilyHistory
         | Symptom
         | "needle_accident"
         | "drug_shared"
