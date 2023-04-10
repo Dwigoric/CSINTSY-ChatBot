@@ -29,7 +29,7 @@ setAge(X):-
     (X > 59 -> assert(age(old)))).
 setGender(Y):-
     ((Y==m -> assert(gender(male)));
-    (Y==f-> assert(gender(female))))    .
+    (Y==f-> assert(gender(female)))).
 setBodyTemp(Z):-
     (Z>=38 -> assert(has(fever));
     Z<38 -> assert(no(fever))).
@@ -77,7 +77,9 @@ hiv:-
     (has(multi_infections); (no(multi_infections)->updateChance(hiv,10))),
     (has(unsafe_sex); (no(unsafe_sex)->updateChance(hiv,5))),
     (has(unprotected); (no(unprotected)->updateChance(hiv,5))),
-    (has(multiplepartners);(no(multiplepartners)->updateChance(hiv,5))),
+    (has(multiple_partners);(no(multiple_partners)->updateChance(hiv,5))),
+    (has(needle_accident);(no(needle_accident)->updateChance(hiv,5))),
+    (has(drug_shared);(no(drug_shared)->updateChance(hiv,5))),
     ((gender(male)->has(msm)); (no(msm)->updateChance(hiv,2))).
 
 tubercolosis:-

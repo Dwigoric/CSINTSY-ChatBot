@@ -10,6 +10,12 @@ A Discord chatbot for diagnosing common illnesses in the Philippines. *It must b
 - [Discord Bot Token](https://discord.com/developers/applications)
 
 
+## Usage
+To run a diagnosis, simply type `/diagnose` in the chat.
+You will then be asked to agree to the terms of the bot.
+The bot will then ask you a series of questions to determine the illness.
+After the diagnosis, the bot will provide you with a list of possible illnesses.
+
 
 ## Installation
 
