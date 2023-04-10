@@ -8,6 +8,17 @@ const program = `
 :- dynamic(chance/2).
 :- dynamic(diagnosis/2).
 
+chance(hiv,100).
+chance(tubercolosis,100).
+chance(bacterial_pneumonia,100).
+chance(measles,100).
+chance(hypertension,100).
+chance(gastroenteritis,100).
+chance(dengue,100).
+chance(uti,100).
+chance(diabetes,100).
+chance(breast_cancer,100).
+
 diagnose(Person):-
 	% Assert preliminary facts like gender, age, temperature, etc.
 
@@ -15,9 +26,31 @@ diagnose(Person):-
 	findall(Disease,diag(Disease),_),
 	findMostLikely(_,MostLikelyList),
 	assertz(diagnosis(Person,MostLikelyList)),
-    undo,
     take(1, MostLikelyList, FirstDiagnosis),
-	write(FirstDiagnosis).
+	write(FirstDiagnosis),
+	undo.
+	
+chance(hiv,100).
+chance(tubercolosis,100).
+chance(bacterial_pneumonia,100).
+chance(measles,100).
+chance(hypertension,100).
+chance(gastroenteritis,100).
+chance(dengue,100).
+chance(uti,100).
+chance(diabetes,100).
+chance(breast_cancer,100).
+
+diag(hiv):- hiv, !.
+diag(tubercolosis):-tubercolosis,!.
+diag(bacterial_pneumonia):- bacterial_pneumonia,!.
+diag(measles):- measles,!.
+diag(hypertension):- hypertension, !.
+diag(gastroenteritis):-gastroenteritis,!.
+diag(dengue):-dengue,!.
+diag(uti):- uti,!.
+diag(diabetes):- diabetes,!.
+diag(breast_cancer):-breast_cancer,!.
 
 setAge(X):-
 	(( X< 6 -> assertz(age(infant)));
@@ -36,19 +69,6 @@ setBmi(Height,Weight):-
 	BMI is Weight/Height^2,
 	(BMI >30 -> assertz(has(obese));
 	assertz(no(obese))).
-
-diag(hiv):- hiv, !.
-diag(tubercolosis):-tubercolosis,!.
-diag(bacterial_pneumonia):- bacterial_pneumonia,!.
-diag(measles):- measles,!.
-diag(hypertension):- hypertension, !.
-diag(gastroenteritis):-gastroenteritis,!.
-diag(dengue):-dengue,!.
-diag(uti):- uti,!.
-diag(diabetes):- diabetes,!.
-diag(breast_cancer):-breast_cancer,!.
-
-
 
 
 hiv:-
