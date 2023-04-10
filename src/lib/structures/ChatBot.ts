@@ -1,5 +1,5 @@
 import { container, SapphireClient } from "@sapphire/framework";
-import { ClientOptions, EmbedBuilder, SelectMenuInteraction, Snowflake, StringSelectMenuInteraction } from "discord.js";
+import { ClientOptions, EmbedBuilder, Snowflake, StringSelectMenuInteraction } from "discord.js";
 
 import program from "../../knowledgeBase";
 const pl = require("tau-prolog");
@@ -28,7 +28,6 @@ interface TauPrologInstance {
 
 // ------------------ Personal Data ------------------
 const symptomQuestions = Object.freeze({
-    fever: "Are you experiencing a fever or chills?",
     mucus: "Do you produce green, yellow, or bloody mucus when you cough?",
     fatigue: "Do you feel extremely tired or have little to no energy?",
     shortness_of_breath: "Do you experience shortness of breath?",
@@ -64,16 +63,16 @@ const symptomQuestions = Object.freeze({
 type Symptom = keyof typeof symptomQuestions;
 
 const symptomsPerDisease = Object.freeze({
-    bacterial_pneumonia: ["fever", "mucus", "fatigue", "shortness_of_breath", "cough"],
+    bacterial_pneumonia: ["mucus", "fatigue", "shortness_of_breath", "cough"],
     tuberculosis: ["cough", "weight_loss", "afternoon_sweats", "swole_lymph_nodes"],
-    measles: ["fever", "rash", "red_eyes", "respiratory"],
+    measles: ["rash", "red_eyes", "respiratory"],
     hypertension: ["kidney", "headache"],
-    gastroenteritis: ["fever", "chills", "nausea_or_vomiting", "diarrhea", "abdominal"],
-    dengue: ["fever", "malaise", "rash", "nausea_or_vomiting", "bleeding"],
-    uti: ["urge_to_urinate", "burning_sensation", "small_urine", "dark_urine", "fever", "chills"],
+    gastroenteritis: ["chills", "nausea_or_vomiting", "diarrhea", "abdominal"],
+    dengue: ["malaise", "rash", "nausea_or_vomiting", "bleeding"],
+    uti: ["urge_to_urinate", "burning_sensation", "small_urine", "dark_urine", "chills"],
     diabetes: ["thirst", "weight_loss", "hunger", "fatigue"],
     breast_cancer: ["lumps", "breast_change", "blood_discharge", "pain_nipple", "swole_lymph_nodes"],
-    hiv: ["fever", "weight_loss", "white_spot_or_purple_patch", "fatigue", "muscle_ache", "swole_lymph_nodes", "multi_infections"],
+    hiv: ["weight_loss", "white_spot_or_purple_patch", "fatigue", "muscle_ache", "swole_lymph_nodes", "multi_infections"],
 });
 
 type FamilyHistory = "high_blood_pressure" | "diabetes" | "uti" | "breast_cancer";
