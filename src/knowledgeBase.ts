@@ -48,16 +48,7 @@ diag(uti):- uti,!.
 diag(diabetes):- diabetes,!.
 diag(breast_cancer):-breast_cancer,!.
 
-chance(hiv,100).
-chance(tubercolosis,100).
-chance(bacterial_pneumonia,100).
-chance(measles,100).
-chance(hypertension,100).
-chance(gastroenteritis,100).
-chance(dengue,100).
-chance(uti,100).
-chance(diabetes,100).
-chance(breast_cancer,100).
+
 
 
 hiv:-
@@ -68,9 +59,11 @@ hiv:-
 	(has(muscle_ache);(no(muscle_ache)->updateChance(hiv,5))),
 	(has(exposed); (no(exposed)->updateChance(hiv,5))),
 	(has(swole_lymph_nodes); (no(swole_lymph_nodes)->updateChance(hiv,5))),
-	(has(multi_infections); (no(multi_infections)->updateChance(hiv,15))),
-	(has(unsafe_sex); (no(unsafe_sex)->updateChance(hiv,15))),
-	(has(unprotected); (no(unprotected)->updateChance(hiv,15))),
+	(has(multi_infections); (no(multi_infections)->updateChance(hiv,10))),
+
+	(has(unsure_protection); (no(unsure_protection)->updateChance(hiv,10))),
+	(has(unsafe_sex_practices); (no(unsafe_sex_practices)->updateChance(hiv,15))),
+	(has(unprotected); (no(unprotected)->updateChance(hiv,10))),
 	(has(multiple_partners);(no(multiple_partners)->updateChance(hiv,15))),
 	(has(needle_accident);(no(needle_accident)->updateChance(hiv,2))),
 	(has(drug_shared);(no(drug_shared)->updateChance(hiv,1))),
@@ -84,18 +77,20 @@ tubercolosis:-
 
 bacterial_pneumonia:-
 	(has(fever); (no(fever) -> updateChance(bacterial_pneumonia,10))),
-	(has(mucus);(no(mucus)->updateChance(bacterial_pneumonia,25))),
+	(has(mucus);(no(mucus)->updateChance(bacterial_pneumonia,20))),
 	(has(fatigue);no(fatigue)->updateChance(bacterial_pneumonia,10)),
 	(has(smoking);(no(smoking)->updateChance(bacterial_pneumonia,20))),
-	(has(cough);(no(cough)->updateChance(bacterial_pneumonia,25))),
-	(age(old);updateChance(bacterial_pneumonia,10)).
+	(has(cough);(no(cough)->updateChance(bacterial_pneumonia,20))),
+	(age(old);updateChance(bacterial_pneumonia,10)),
+	(has(shortness_of)breath);(no(shortness_of_breath)->updateChance(bacterial_pneumonia,10)).
 
 measles:-
-	(has(fever); (no(fever) -> updateChance(measles,25))),
+	(has(fever); (no(fever) -> updateChance(measles,20))),
 	(has(rash);(no(rash)->updateChance(measles,25))),
 	(age(infant);(no(age(infant))->updateChance(measles,10))),
 	(has(red_eyes);(no(red_eyes)->updateChance(measles,15))),
-	(has(respiratory);(no(respiratory)->updateChance(measles,25))).
+	(has(respiratory);(no(respiratory)->updateChance(measles,20))),
+	(has(measles_vaccination);(no(measles_vaccination)->updateChance(measles,10))).
 
 hypertension:-
 	(has(high_blood);no(high_blood)->updateChance(hypertension,30)),
@@ -105,11 +100,13 @@ hypertension:-
 	(has(headache);(no(headache)->updateChance(hypertension,15))).
 
 gastroenteritis:-
-	(has(fever); (no(fever) -> updateChance(gastroenteritis,10))),
-	(has(chills);(no(chills) -> updateChance(gastroenteritis,15))),
+	(has(fever); (no(fever) -> updateChance(gastroenteritis,5))),
+	(has(chills);(no(chills) -> updateChance(gastroenteritis,5))),
 	(has(nausea_or_vomiting);(no(nausea_or_vomiting)->updateChance(gastroenteritis,15))),
-	(has(diarrhea);(no(diarrhea)->updateChance(gastroenteritis,30))),
-	(has(abdominal);(no(abdominal)->updateChance(gastroenteritis,30))).
+	(has(diarrhea);(no(diarrhea)->updateChance(gastroenteritis,20))),
+	(has(abdominal);(no(abdominal)->updateChance(gastroenteritis,20))),
+	(Has(travel);(no(travel)->updateChance(gastroenteritis,15))),
+	(has(contaminated);(no(contaminated)->updateChance(gastroenteritis,20)))
 
 dengue:-
 	(has(fever); (no(fever) -> updateChance(dengue,10))),
@@ -120,9 +117,10 @@ dengue:-
 	(has(bleeding);(no(bleeding)->updateChance(dengue,10))).
 
 uti:-
-	(has(urge_to_urinate);(no(urge_to_urinate)->updateChance(uti,30))),
-	(has(burning_sensation);(no(burning_sensation)->updateChance(uti,25))),
+	(has(urge_to_urinate);(no(urge_to_urinate)->updateChance(uti,25))),
+	(has(burning_sensation);(no(burning_sensation)->updateChance(uti,20))),
 	(has(small_urine);(no(small_urine)->updateChance(uti,25))),
+	(has(dark_urine);(no(dark_urine)->updateChance(uti,10))),
 	(has(fever); (no(fever) -> updateChance(uti,5))),
 	(has(chills);(no(chills) -> updateChance(uti,5))),
 	(has(uti_history);(no(uti_history)->updateChance(uti,10))). 
