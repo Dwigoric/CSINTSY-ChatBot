@@ -22,34 +22,34 @@ export class FamilyHistoryHandler extends InteractionHandler {
 		const actionRow = new ActionRowBuilder<StringSelectMenuBuilder>()
 			.addComponents(
 				new StringSelectMenuBuilder({
-					custom_id: 'diagnosis:history',
+					custom_id: "diagnosis:history",
 					min_values: 1,
 					max_values: 4,
 					options: [
 						{
-							label: 'High blood pressure',
-							description: 'Patient\'s family has history of high blood pressure.',
-							value: 'high_blood_pressure'
+							label: "High blood pressure",
+							description: "Patient\'s family has history of high blood pressure.",
+							value: "high_blood_pressure_history"
 						},
 						{
-							label: 'Diabetes',
-							description: 'Patient\'s family has history of diabetes.',
-							value: 'diabetes'
+							label: "Diabetes",
+							description: "Patient\'s family has history of diabetes.",
+							value: "diabetes"
 						},
 						{
-							label: 'UTI',
-							description: 'Patient\'s family has history of UTI.',
-							value: 'uti'
+							label: "UTI",
+							description: "Patient\'s family has history of UTI.",
+							value: "uti"
 						},
 						{
-							label: 'Breast cancer',
-							description: 'Patient\'s family has history of breast cancer.',
-							value: 'breast_cancer'
+							label: "Breast cancer",
+							description: "Patient\'s family has history of breast cancer.",
+							value: "breast_cancer"
 						},
 						{
-							label: 'NOTA',
-							description: 'None of the above.',
-							value: 'none'
+							label: "NOTA",
+							description: "None of the above.",
+							value: "none"
 						}
 					]
 				})
