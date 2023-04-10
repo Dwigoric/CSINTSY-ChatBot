@@ -23,7 +23,7 @@ export class DeleteDataCommand extends Command {
 				);
 		}, {
 			guildIds: [process.env.TEST_GUILD_ID ?? ""],
-			idHints: []
+			idHints: ["1094843143532318783"]
 		});
 	}
 
