@@ -16,6 +16,15 @@ You will then be asked to agree to the terms of the bot.
 The bot will then ask you a series of questions to determine the illness.
 After the diagnosis, the bot will provide you with a list of possible illnesses.
 
+We used ephemeral messages in Discord (only you can see them) for the utmost privacy.
+However, due to the nature of ephemeral messages, the bot will not be able to know
+if you have dismissed the message or not. If you have dismissed the message by accident,
+please run the `/deletedata` command to delete your data from the bot's memory.
+**Under no circumstances should you run the `/deletedata` command if you have not dismissed
+the message.** Doing so will result in the bot not being able to diagnose you.
+It should be noted, though, that once a diagnosis is completed, the bot will automatically
+delete your data from its memory, and a new diagnosis can be initiated.
+
 
 ## Installation
 
