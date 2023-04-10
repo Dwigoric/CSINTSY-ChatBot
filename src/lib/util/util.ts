@@ -7,7 +7,7 @@ function parseDiseaseSymptoms(disease: Disease) {
 
 	return symptoms.map((symptom: keyof typeof symptomQuestions) => {
 		return {
-			label: symptom,
+			label: symptom.split("_").map((word) => word.replace(/^./, i => i.toUpperCase())).join(" "),
 			value: symptom,
 			description: symptomQuestions[symptom]
 		}
