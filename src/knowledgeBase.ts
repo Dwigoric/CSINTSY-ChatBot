@@ -32,24 +32,24 @@ diagnose(Person):-
 	
 
 
-diag(hiv):- hiv.
-diag(tubercolosis):-tubercolosis.
-diag(bacterial_pneumonia):- bacterial_pneumonia.
-diag(measles):- measles.
-diag(hypertension):- hypertension.
-diag(gastroenteritis):-gastroenteritis.
-diag(dengue):-dengue.
-diag(uti):- uti.
-diag(diabetes):- diabetes.
-diag(breast_cancer):-breast_cancer.
+diag(hiv):- chance(hiv,100)->hiv.
+diag(tubercolosis):-chance(tubercolosis,100)->tubercolosis.
+diag(bacterial_pneumonia):- chance(bacterial_pneumonia,100)->bacterial_pneumonia.
+diag(measles):- chance(measles,100)->measles.
+diag(hypertension):-chance(hypertension,100)-> hypertension.
+diag(gastroenteritis):-chance(gastroenteritis,100)->gastroenteritis.
+diag(dengue):-chance(dengue,100)->dengue.
+diag(uti):- chance(uti,100)->uti.
+diag(diabetes):-chance(bacterial_pnediabetesumonia,100)-> diabetes.
+diag(breast_cancer):-chance(breast_cancer,100)->breast_cancer.
 
 setAge(X):-
 	(( X< 6 -> assertz(age(infant)));
 	((X>5 , X<60)-> assertz(age(normal)));
 	(X > 59 -> assertz(age(old)))).
 setGender(Y):-
-	((Y==M -> assertz(gender(male)));
-	(Y==F-> assertz(gender(female)))).
+	((Y==m -> assertz(gender(male)));
+	(Y==f-> assertz(gender(female)))).
 setBodyTemp(Z):-
 	(Z>=38 -> assertz(has(fever));
 	Z<38 -> assertz(no(fever))).
@@ -157,8 +157,7 @@ updateChance(Disease, Subtract):-
 	chance(Disease,Weight),
 	X is Weight - Subtract,
 	retract(chance(Disease,_)),
-	assertz(chance(Disease,X)),
-	((X < 75) -> fail;true).
+	assertz(chance(Disease,X)).
 
 
 findMostLikely(DiseaseList,MostLikelyList):-
