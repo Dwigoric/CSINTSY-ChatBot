@@ -41,8 +41,8 @@ export class DiagnoseCommand extends Command {
                             )
                             .setRequired(true)
                             .setChoices(
-                                { name: "M", value: "M" },
-                                { name: "F", value: "F" }
+                                { name: "Male", value: "m" },
+                                { name: "Female", value: "f" }
                             )
                     )
                     .addNumberOption((option) =>
