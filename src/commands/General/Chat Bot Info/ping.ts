@@ -16,8 +16,8 @@ export class PingCommand extends Command {
                 .setName(this.name)
                 .setDescription(this.description)
         }, {
-            guildIds: [process.env.TEST_GUILD_ID ?? ''],
-            idHints: ['1092428204653940827']
+            guildIds: process.env.TEST_GUILD_ID ? [process.env.TEST_GUILD_ID] : [],
+            idHints: []
         });
     }
 

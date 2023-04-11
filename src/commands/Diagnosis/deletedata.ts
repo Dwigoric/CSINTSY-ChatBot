@@ -22,8 +22,8 @@ export class DeleteDataCommand extends Command {
 						.setRequired(true)
 				);
 		}, {
-			guildIds: [process.env.TEST_GUILD_ID ?? ""],
-			idHints: ["1094843143532318783"]
+			guildIds: process.env.TEST_GUILD_ID ? [process.env.TEST_GUILD_ID] : [],
+			idHints: []
 		});
 	}
 

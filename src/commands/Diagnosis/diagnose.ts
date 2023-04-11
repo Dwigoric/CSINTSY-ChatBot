@@ -97,8 +97,8 @@ export class DiagnoseCommand extends Command {
                     );
             },
             {
-                guildIds: [process.env.TEST_GUILD_ID ?? ""],
-                idHints: ["1092963801625792512"],
+                guildIds: process.env.TEST_GUILD_ID ? [process.env.TEST_GUILD_ID] : [],
+                idHints: [],
             }
         );
     }
