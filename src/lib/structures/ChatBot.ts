@@ -6,8 +6,6 @@ const pl = require("tau-prolog");
 require("tau-prolog/modules/promises.js")(pl);
 require("tau-prolog/modules/lists.js")(pl);
 
-const session = pl.create({ limit: 1000 });
-
 // ------------------ Prolog ------------------
 interface Session {
     answers(arg0: (answer: any) => void): unknown;
@@ -76,6 +74,17 @@ const symptomsPerDisease = Object.freeze({
 });
 
 type FamilyHistory = "high_blood_pressure" | "diabetes" | "uti" | "breast_cancer";
+type Lifestyles =
+    | "needle_accident"
+    | "drug_shared"
+    | "travel"
+    | "smoke"
+    | "multiple_partners"
+    | "unsure_protection"
+    | "unsafe_sex_practices"
+    | "msm"
+    | "contaminated"
+    | "measles_vaccination";
 interface PersonalData {
     age: number;
     biologicalSex: string;
@@ -86,20 +95,7 @@ interface PersonalData {
     diastolicBloodPressure: number;
     started: boolean;
 
-    indicators: (
-        | FamilyHistory
-        | Symptom
-        | "needle_accident"
-        | "drug_shared"
-        | "travel"
-        | "smoke"
-        | "multiple_partners"
-        | "unsure_protection"
-        | "unsafe_sex_practices"
-        | "msm"
-        | "contaminated"
-        | "measles_vaccination"
-    )[];
+    indicators: (FamilyHistory | Symptom | Lifestyles)[];
     asked: Symptom[];
     diagnosis: {
         disease: string | undefined;
@@ -155,6 +151,8 @@ export default class ChatBot extends SapphireClient {
         userId: string,
         interaction: StringSelectMenuInteraction
     ) {
+        const session = pl.create({ limit: 1000 });
+
         let queryString = "";
 
         const ageGoal = `setAge(${user.age}).`;

@@ -95,7 +95,7 @@ measles:-
 	(age(infant);updateChance(measles,10)),
 	(has(red_eyes);(no(red_eyes)->updateChance(measles,15))),
 	(has(respiratory);(no(respiratory)->updateChance(measles,20))),
-	(has(measles_vaccination);(no(measles_vaccination)->updateChance(measles,10))).
+	(no(measles_vaccination);(has(measles_vaccination)->updateChance(measles,10))).
 
 hypertension:-
 	(has(high_blood);no(high_blood)->updateChance(hypertension,30)),
