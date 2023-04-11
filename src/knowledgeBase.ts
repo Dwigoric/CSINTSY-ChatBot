@@ -72,11 +72,11 @@ hiv:-
 	(has(multi_infections); (no(multi_infections)->updateChance(hiv,10))),
 	(has(unsure_protection); (no(unsure_protection)->updateChance(hiv,10))),
 	(has(unsafe_sex_practices); (no(unsafe_sex_practices)->updateChance(hiv,15))),
-	(has(unprotected); (no(unprotected)->updateChance(hiv,10))),
+
 	(has(multiple_partners);(no(multiple_partners)->updateChance(hiv,15))),
 	(has(needle_accident);(no(needle_accident)->updateChance(hiv,5))),
 	(has(drug_shared);(no(drug_shared)->updateChance(hiv,5))),
-	(gender(male)->(no(msm)->updateChance(hiv,5));gender(female)).
+	((gender(male),no(msm))->updateChance(hiv,5);gender(female)).
 tubercolosis:-
 	(has(weight_loss);(no(weight_loss)->updateChance(tubercolosis,25))),
 	(has(cough);(no(cough)->updateChance(tubercolosis,25))),
@@ -89,16 +89,16 @@ bacterial_pneumonia:-
 	(has(fatigue);no(fatigue)->updateChance(bacterial_pneumonia,10)),
 	(has(smoke);(no(smoke)->updateChance(bacterial_pneumonia,20))),
 	(has(cough);(no(cough)->updateChance(bacterial_pneumonia,15))),
-	(age(old);updateChance(bacterial_pneumonia,10)),
+	(age(old);((age(normal);age(young))-> updateChance(bacterial_pneumonia,10))),
 	(has(shortness_of_breath);(no(shortness_of_breath)->updateChance(bacterial_pneumonia,15))).
 
 measles:-
 	(has(fever); (no(fever) -> updateChance(measles,20))),
 	(has(rash);(no(rash)->updateChance(measles,25))),
-	(age(infant);(no(age(infant))->updateChance(measles,10))),
+	(age(infant);((age(old);age(normal))->updateChance(measles,10))),
 	(has(red_eyes);(no(red_eyes)->updateChance(measles,15))),
 	(has(respiratory);(no(respiratory)->updateChance(measles,20))),
-	(has(measles_vaccination);(no(measles_vaccination)->updateChance(measles,10))).
+	(no(measles_vaccination);(has(measles_vaccination)->updateChance(measles,10))).
 
 hypertension:-
 	(has(high_blood);no(high_blood)->updateChance(hypertension,30)),
