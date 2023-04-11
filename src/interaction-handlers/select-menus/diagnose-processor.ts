@@ -62,10 +62,38 @@ export class DiagnoseProcessHandler extends InteractionHandler {
     }
 
     private async conclude(interaction: StringSelectMenuInteraction) {
-        const symptoms = Object.keys(this.container.client.symptomQuestions) as Array<keyof typeof this.container.client.symptomQuestions>;
+        type FamilyHistory = "high_blood_pressure" | "diabetes" | "uti" | "breast_cancer";
+        type Lifestyles =
+            | "needle_accident"
+            | "drug_shared"
+            | "travel"
+            | "smoke"
+            | "multiple_partners"
+            | "unsure_protection"
+            | "unsafe_sex_practices"
+            | "msm"
+            | "contaminated"
+            | "measles_vaccination"
+
+        const indicators = [
+            ...Object.keys(this.container.client.symptomQuestions),
+            "high_blood_pressure",
+            "diabetes",
+            "uti",
+            "breast_cancer",
+            "needle_accident",
+            "drug_shared",
+            "travel",
+            "mutliple_partners",
+            "unsure_protection",
+            "unsafe_sex_practices",
+            "msm",
+            "contaminated",
+            "measles_vaccination"
+        ] as Array<keyof typeof this.container.client.symptomQuestions | FamilyHistory | Lifestyles>;
 
         const YES = this.container.client.directory.get(interaction.user.id)!.indicators;
-        const NO = symptoms.filter((symptom) => !YES.includes(symptom));
+        const NO = indicators.filter((indicator) => !YES.includes(indicator));
         const user = this.container.client.directory.get(interaction.user.id)!;
 
         await this.container.client.getDiagnosis(YES, NO, user, interaction.user.id, interaction);

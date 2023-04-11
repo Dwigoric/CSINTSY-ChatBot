@@ -76,6 +76,17 @@ const symptomsPerDisease = Object.freeze({
 });
 
 type FamilyHistory = "high_blood_pressure" | "diabetes" | "uti" | "breast_cancer";
+type Lifestyles =
+    | "needle_accident"
+    | "drug_shared"
+    | "travel"
+    | "smoke"
+    | "multiple_partners"
+    | "unsure_protection"
+    | "unsafe_sex_practices"
+    | "msm"
+    | "contaminated"
+    | "measles_vaccination"
 interface PersonalData {
     age: number;
     biologicalSex: string;
@@ -89,16 +100,7 @@ interface PersonalData {
     indicators: (
         | FamilyHistory
         | Symptom
-        | "needle_accident"
-        | "drug_shared"
-        | "travel"
-        | "smoke"
-        | "multiple_partners"
-        | "unsure_protection"
-        | "unsafe_sex_practices"
-        | "msm"
-        | "contaminated"
-        | "measles_vaccination"
+        | Lifestyles
     )[];
     asked: Symptom[];
     diagnosis: {
