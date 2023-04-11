@@ -91,7 +91,7 @@ bacterial_pneumonia:-
 	(has(smoking);(no(smoking)->updateChance(bacterial_pneumonia,20))),
 	(has(cough);(no(cough)->updateChance(bacterial_pneumonia,15))),
 	(age(old);updateChance(bacterial_pneumonia,10)),
-	(has(shortness_of_breath);(no(shortness_of_breath)->updateChance(bacterial_pneumonia,15)).
+	(has(shortness_of_breath);(no(shortness_of_breath)->updateChance(bacterial_pneumonia,15))).
 
 measles:-
 	(has(fever); (no(fever) -> updateChance(measles,20))),
