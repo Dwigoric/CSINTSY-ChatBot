@@ -9,7 +9,7 @@ const program = `
 :- dynamic(diagnosis/2).
 
 chance(hiv,100).
-chance(tubercolosis,100).
+chance(tuberculosis,100).
 chance(bacterial_pneumonia,100).
 chance(measles,100).
 chance(hypertension,100).
@@ -29,11 +29,9 @@ diagnose(Person):-
     take(1, MostLikelyList, FirstDiagnosis),
 	write(FirstDiagnosis),
 	undo.
-	
-
 
 diag(hiv):- chance(hiv,100)->hiv.
-diag(tubercolosis):-chance(tubercolosis,100)->tubercolosis.
+diag(tuberculosis):-chance(tuberculosis,100)->tuberculosis.
 diag(bacterial_pneumonia):- chance(bacterial_pneumonia,100)->bacterial_pneumonia.
 diag(measles):- chance(measles,100)->measles.
 diag(hypertension):-chance(hypertension,100)-> hypertension.
@@ -72,16 +70,15 @@ hiv:-
 	(has(multi_infections); (no(multi_infections)->updateChance(hiv,10))),
 	(has(unsure_protection); (no(unsure_protection)->updateChance(hiv,10))),
 	(has(unsafe_sex_practices); (no(unsafe_sex_practices)->updateChance(hiv,15))),
-
 	(has(multiple_partners);(no(multiple_partners)->updateChance(hiv,15))),
-	(has(needle_accident);(no(needle_accident)->updateChance(hiv,5))),
-	(has(drug_shared);(no(drug_shared)->updateChance(hiv,5))),
+	(has(needle_accident);(no(needle_accident)->updateChance(hiv,10))),
+	(has(drug_shared);(no(drug_shared)->updateChance(hiv,10))),
 	((gender(male),no(msm))->updateChance(hiv,5);gender(female)).
-tubercolosis:-
-	(has(weight_loss);(no(weight_loss)->updateChance(tubercolosis,25))),
-	(has(cough);(no(cough)->updateChance(tubercolosis,25))),
-	(has(afternoon_sweats);(no(afternoon_sweats)->updateChance(tubercolosis,25))),
-	(has(swole_lymph_nodes);(no(swole_lymph_nodes)->updateChance(tubercolosis,25))).
+tuberculosis:-
+	(has(weight_loss);(no(weight_loss)->updateChance(tuberculosis,25))),
+	(has(cough);(no(cough)->updateChance(tuberculosis,25))),
+	(has(afternoon_sweats);(no(afternoon_sweats)->updateChance(tuberculosis,25))),
+	(has(swole_lymph_nodes);(no(swole_lymph_nodes)->updateChance(tuberculosis,25))).
 
 bacterial_pneumonia:-
 	(has(fever); (no(fever) -> updateChance(bacterial_pneumonia,10))),
@@ -89,13 +86,13 @@ bacterial_pneumonia:-
 	(has(fatigue);no(fatigue)->updateChance(bacterial_pneumonia,10)),
 	(has(smoke);(no(smoke)->updateChance(bacterial_pneumonia,20))),
 	(has(cough);(no(cough)->updateChance(bacterial_pneumonia,15))),
-	(age(old);(not(age(old))-> updateChance(bacterial_pneumonia,10))),
+	(age(old); updateChance(bacterial_pneumonia,10)),
 	(has(shortness_of_breath);(no(shortness_of_breath)->updateChance(bacterial_pneumonia,15))).
 
 measles:-
 	(has(fever); (no(fever) -> updateChance(measles,20))),
 	(has(rash);(no(rash)->updateChance(measles,25))),
-	(age(infant);(not(age(infant))->updateChance(measles,10))),
+	(age(infant);updateChance(measles,10)),
 	(has(red_eyes);(no(red_eyes)->updateChance(measles,15))),
 	(has(respiratory);(no(respiratory)->updateChance(measles,20))),
 	(no(measles_vaccination);(has(measles_vaccination)->updateChance(measles,10))).
@@ -133,13 +130,13 @@ uti:-
 	(has(uti);(no(uti)->updateChance(uti,20))). 
 
 diabetes:-
-	(has(obese);(no(obese)->updateChance(diabetes,20))),
-	(has(thirst);(no(thirst)->updateChance(diabetes,15))),
-	(has(weight_loss);(no(weight_loss)->updateChance(diabetes,10))),
-	(has(hunger);(no(hunger)->updateChance(diabetes,15))),
-	(has(high_blood);no(high_blood)->updateChance(diabetes,15)),
-	(has(fatigue);no(fatigue)->updateChance(hiv,10)),
-	(has(diabetes);(no(diabetes)->updateChance(diabetes,15))).
+	(no(obese)->updateChance(diabetes,20);has(obese)),
+	(no(thirst)->updateChance(diabetes,15);has(thirst)),
+	(no(weight_loss)->updateChance(diabetes,10);has(weight_loss)),
+	(no(hunger)->updateChance(diabetes,15);has(hunger)),
+	(no(high_blood)->updateChance(diabetes,15);has(high_blood)),
+	(no(fatigue)->updateChance(diabetes,10),has(fatigue)),
+	(no(diabetes)->updateChance(diabetes,15);has(diabetes)).
 
 
 breast_cancer:-
