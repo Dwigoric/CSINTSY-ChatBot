@@ -89,13 +89,13 @@ bacterial_pneumonia:-
 	(has(fatigue);no(fatigue)->updateChance(bacterial_pneumonia,10)),
 	(has(smoke);(no(smoke)->updateChance(bacterial_pneumonia,20))),
 	(has(cough);(no(cough)->updateChance(bacterial_pneumonia,15))),
-	(age(old);((age(normal);age(young))-> updateChance(bacterial_pneumonia,10))),
+	(age(old);(not(age(old))-> updateChance(bacterial_pneumonia,10))),
 	(has(shortness_of_breath);(no(shortness_of_breath)->updateChance(bacterial_pneumonia,15))).
 
 measles:-
 	(has(fever); (no(fever) -> updateChance(measles,20))),
 	(has(rash);(no(rash)->updateChance(measles,25))),
-	(age(infant);((age(old);age(normal))->updateChance(measles,10))),
+	(age(infant);(not(age(infant))->updateChance(measles,10))),
 	(has(red_eyes);(no(red_eyes)->updateChance(measles,15))),
 	(has(respiratory);(no(respiratory)->updateChance(measles,20))),
 	(no(measles_vaccination);(has(measles_vaccination)->updateChance(measles,10))).
