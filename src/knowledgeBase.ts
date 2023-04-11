@@ -30,27 +30,18 @@ diagnose(Person):-
 	write(FirstDiagnosis),
 	undo.
 	
-chance(hiv,100).
-chance(tubercolosis,100).
-chance(bacterial_pneumonia,100).
-chance(measles,100).
-chance(hypertension,100).
-chance(gastroenteritis,100).
-chance(dengue,100).
-chance(uti,100).
-chance(diabetes,100).
-chance(breast_cancer,100).
 
-diag(hiv):- hiv, !.
-diag(tubercolosis):-tubercolosis,!.
-diag(bacterial_pneumonia):- bacterial_pneumonia,!.
-diag(measles):- measles,!.
-diag(hypertension):- hypertension, !.
-diag(gastroenteritis):-gastroenteritis,!.
-diag(dengue):-dengue,!.
-diag(uti):- uti,!.
-diag(diabetes):- diabetes,!.
-diag(breast_cancer):-breast_cancer,!.
+
+diag(hiv):- hiv.
+diag(tubercolosis):-tubercolosis.
+diag(bacterial_pneumonia):- bacterial_pneumonia.
+diag(measles):- measles.
+diag(hypertension):- hypertension.
+diag(gastroenteritis):-gastroenteritis.
+diag(dengue):-dengue.
+diag(uti):- uti.
+diag(diabetes):- diabetes.
+diag(breast_cancer):-breast_cancer.
 
 setAge(X):-
 	(( X< 6 -> assertz(age(infant)));
@@ -77,17 +68,15 @@ hiv:-
 	(has(white_spot_or_purple_patch); (no(white_spot_or_purple_patch)->updateChance(hiv,5))),
 	(has(fatigue);(no(fatigue)->updateChance(hiv,5))),
 	(has(muscle_ache);(no(muscle_ache)->updateChance(hiv,5))),
-	(has(exposed); (no(exposed)->updateChance(hiv,5))),
 	(has(swole_lymph_nodes); (no(swole_lymph_nodes)->updateChance(hiv,5))),
 	(has(multi_infections); (no(multi_infections)->updateChance(hiv,10))),
-
 	(has(unsure_protection); (no(unsure_protection)->updateChance(hiv,10))),
 	(has(unsafe_sex_practices); (no(unsafe_sex_practices)->updateChance(hiv,15))),
 	(has(unprotected); (no(unprotected)->updateChance(hiv,10))),
 	(has(multiple_partners);(no(multiple_partners)->updateChance(hiv,15))),
-	(has(needle_accident);(no(needle_accident)->updateChance(hiv,2))),
-	(has(drug_shared);(no(drug_shared)->updateChance(hiv,1))),
-	((gender(male)->has(msm)); (no(msm)->updateChance(hiv,2))).
+	(has(needle_accident);(no(needle_accident)->updateChance(hiv,5))),
+	(has(drug_shared);(no(drug_shared)->updateChance(hiv,5))),
+	((gender(male)->has(msm); (no(msm)->updateChance(hiv,5)));gender(female)).
 
 tubercolosis:-
 	(has(weight_loss);(no(weight_loss)->updateChance(tubercolosis,25))),
@@ -100,9 +89,9 @@ bacterial_pneumonia:-
 	(has(mucus);(no(mucus)->updateChance(bacterial_pneumonia,20))),
 	(has(fatigue);no(fatigue)->updateChance(bacterial_pneumonia,10)),
 	(has(smoking);(no(smoking)->updateChance(bacterial_pneumonia,20))),
-	(has(cough);(no(cough)->updateChance(bacterial_pneumonia,20))),
+	(has(cough);(no(cough)->updateChance(bacterial_pneumonia,15))),
 	(age(old);updateChance(bacterial_pneumonia,10)),
-	(has(shortness_of)breath);(no(shortness_of_breath)->updateChance(bacterial_pneumonia,10)).
+	(has(shortness_of_breath);(no(shortness_of_breath)->updateChance(bacterial_pneumonia,15)).
 
 measles:-
 	(has(fever); (no(fever) -> updateChance(measles,20))),
@@ -114,7 +103,7 @@ measles:-
 
 hypertension:-
 	(has(high_blood);no(high_blood)->updateChance(hypertension,30)),
-	(has(high_blood_family_history);(no(high_blood_family_history)->updateChance(hypertension,25))),
+	(has(high_blood_pressure_history);(no(high_blood_pressure_history)->updateChance(hypertension,25))),
 	(has(smoking);(no(smoking)->updateChance(hypertension,15))),
 	(has(kidney);(no(kidney)->updateChance(hypertension,15))),
 	(has(headache);(no(headache)->updateChance(hypertension,15))).
@@ -129,49 +118,39 @@ gastroenteritis:-
 	(has(contaminated);(no(contaminated)->updateChance(gastroenteritis,20)))
 
 dengue:-
-	(has(fever); (no(fever) -> updateChance(dengue,10))),
-	(has(malaise);(no(malaise)->updateChance(dengue,10))),
-	(has(rash);(no(rash)->updateChance(dengue,10))),
-	(has(vomit);(no(vomit)->updateChance(dengue,10))),
-	(has(nausea);(no(nausea)->updateChance(dengue,10))),
-	(has(bleeding);(no(bleeding)->updateChance(dengue,10))).
+	(has(fever); (no(fever) -> updateChance(dengue,20))),
+	(has(malaise);(no(malaise)->updateChance(dengue,20))),
+	(has(rash);(no(rash)->updateChance(dengue,20))),
+	(has(nausea_or_vomit);(no(nausea_or_vomit)->updateChance(dengue,20))),
+	(has(bleeding);(no(bleeding)->updateChance(dengue,20))).
 
 uti:-
-	(has(urge_to_urinate);(no(urge_to_urinate)->updateChance(uti,25))),
+	(has(urge_to_urinate);(no(urge_to_urinate)->updateChance(uti,20)),
 	(has(burning_sensation);(no(burning_sensation)->updateChance(uti,20))),
-	(has(small_urine);(no(small_urine)->updateChance(uti,25))),
-	(has(dark_urine);(no(dark_urine)->updateChance(uti,10))),
-	(has(fever); (no(fever) -> updateChance(uti,5))),
+	(has(small_urine);(no(small_urine)->updateChance(uti,15))),
+	(has(dark_urine);(no(dark_urine)->updateChance(uti,15))),
 	(has(chills);(no(chills) -> updateChance(uti,5))),
-	(has(uti_history);(no(uti_history)->updateChance(uti,10))). 
+	(has(fever);(no(fever)->updateChance(uti,5))),
+	(has(uti);(no(uti)->updateChance(uti,20))). 
 
 diabetes:-
-	(has(obese);(no(obese)->updateChance(diabetes,15))),
-	(has(thirst);(no(thirst)->updateChance(diabetes,5))),
+	(has(obese);(no(obese)->updateChance(diabetes,20))),
+	(has(thirst);(no(thirst)->updateChance(diabetes,15))),
 	(has(weight_loss);(no(weight_loss)->updateChance(diabetes,10))),
-	(has(hunger);(no(hunger)->updateChance(diabetes,5))),
-	(has(high_blood);no(high_blood)->updateChance(diabetes,10)),
-	(has(numbness);(no(numbness)->updateChance(diabetes,5))),
-
-
-	(has(tingling);(no(tingling)->updateChance(diabetes,5))), %hands or feet
-	(has(slow_healing);(no(slow_healing)->updateChance(diabetes,10))),
-	(has(frequent_infection);(no(frequent_infection)->updateChance(diabertes,10))), %might move requent infection to the gathering of basic facts
-	(has(fatigue);no(fatigue)->updateChance(hiv,5)),
-	(has(blurred_vision);(no(blurred_vision)->updateChance(diabetes,5))),
-	(has(sedentary);(no(sedentary)->updateChance(diabetes,5))),
-	(has(diabetes_history);(no(diabetes_history)->updateChance(diabetes,10))).
+	(has(hunger);(no(hunger)->updateChance(diabetes,15))),
+	(has(high_blood);no(high_blood)->updateChance(diabetes,15)),
+	(has(fatigue);no(fatigue)->updateChance(hiv,10)),
+	(has(diabetes);(no(diabetes)->updateChance(diabetes,15))).
 
 
 breast_cancer:-
-	(has(lumps);(no(lumps)->updateChance(breast_cancer,10))),%armpit
-	(has(breast_change);(no(breast_change)->updateChance(breast_cancer,10))),
+	(has(lumps);(no(lumps)->updateChance(breast_cancer,15))),%armpit
+	(has(breast_change);(no(breast_change)->updateChance(breast_cancer,20))),
 	(has(blood_discharge);(no(blood_discharge)->updateChance(breast_cancer,15))),
-	(has(pain_nipple);(no(pain_nipple)->updateChance(breast_cancer,10))),
+	(has(pain_nipple);(no(pain_nipple)->updateChance(breast_cancer,20))),
 
-	(has(breast_cancer_history);(no(breast_cancer_history)->updateChance(breast_cancer,15))),
-	(has(skin_texture);(no(skin_texture)->updateChance(breast_cancer,15))),
-	(has(swole_lymph_nodes);no(swole_lymph_nodes)->updateChance(breast_cancer,15)).
+	(has(breast_cancer);(no(breast_cancer)->updateChance(breast_cancer,20))),
+	(has(swole_lymph_nodes);no(swole_lymph_nodes)->updateChance(breast_cancer,10)).
 
 
 updateChance(Disease, Subtract):-
