@@ -92,7 +92,7 @@ bacterial_pneumonia:-
     (has(fever); (no(fever) -> updateChance(bacterial_pneumonia,10))),
     (has(mucus);(no(mucus)->updateChance(bacterial_pneumonia,30))),
     (has(fatigue);no(fatigue)->updateChance(bacterial_pneumonia,10)),
-    (has(smoking);(no(smoking)->updateChance(bacterial_pneumonia,5))),
+    (has(smoke);(no(smoke)->updateChance(bacterial_pneumonia,5))),
     (has(cough);(no(cough)->updateChance(bacterial_pneumonia,20))),
     (age(old);updateChance(bacterial_pneumonia,10)). %if cough -> chest pain
 
@@ -106,7 +106,7 @@ measles:-
 hypertension:-
     (has(high_blood);no(high_blood)->updateChance(hypertension,10)),
     (has(high_blood_family_history);(no(high_blood_family_history)->updateChance(hypertension,10))),
-    (has(smoking);(no(smoking)->updateChance(hypertension,10))),
+    (has(smoke);(no(smoke)->updateChance(hypertension,10))),
     (has(kidney);(no(kidney)->updateChance(hypertension,10))),
     (has(headache);(no(headache)->updateChance(hypertension,10))).
 gastroenteritis:-

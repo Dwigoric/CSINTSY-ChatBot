@@ -40,7 +40,7 @@ diag(hypertension):-chance(hypertension,100)-> hypertension.
 diag(gastroenteritis):-chance(gastroenteritis,100)->gastroenteritis.
 diag(dengue):-chance(dengue,100)->dengue.
 diag(uti):- chance(uti,100)->uti.
-diag(diabetes):-chance(bacterial_pnediabetesumonia,100)-> diabetes.
+diag(diabetes):-chance(diabetes,100)-> diabetes.
 diag(breast_cancer):-chance(breast_cancer,100)->breast_cancer.
 
 setAge(X):-
@@ -76,8 +76,7 @@ hiv:-
 	(has(multiple_partners);(no(multiple_partners)->updateChance(hiv,15))),
 	(has(needle_accident);(no(needle_accident)->updateChance(hiv,5))),
 	(has(drug_shared);(no(drug_shared)->updateChance(hiv,5))),
-	((gender(male)->has(msm); (no(msm)->updateChance(hiv,5)));gender(female)).
-
+	(gender(male)->(no(msm)->updateChance(hiv,5));gender(female)).
 tubercolosis:-
 	(has(weight_loss);(no(weight_loss)->updateChance(tubercolosis,25))),
 	(has(cough);(no(cough)->updateChance(tubercolosis,25))),
@@ -88,7 +87,7 @@ bacterial_pneumonia:-
 	(has(fever); (no(fever) -> updateChance(bacterial_pneumonia,10))),
 	(has(mucus);(no(mucus)->updateChance(bacterial_pneumonia,20))),
 	(has(fatigue);no(fatigue)->updateChance(bacterial_pneumonia,10)),
-	(has(smoking);(no(smoking)->updateChance(bacterial_pneumonia,20))),
+	(has(smoke);(no(smoke)->updateChance(bacterial_pneumonia,20))),
 	(has(cough);(no(cough)->updateChance(bacterial_pneumonia,15))),
 	(age(old);updateChance(bacterial_pneumonia,10)),
 	(has(shortness_of_breath);(no(shortness_of_breath)->updateChance(bacterial_pneumonia,15))).
@@ -104,7 +103,7 @@ measles:-
 hypertension:-
 	(has(high_blood);no(high_blood)->updateChance(hypertension,30)),
 	(has(high_blood_pressure_history);(no(high_blood_pressure_history)->updateChance(hypertension,25))),
-	(has(smoking);(no(smoking)->updateChance(hypertension,15))),
+	(has(smoke);(no(smoke)->updateChance(hypertension,15))),
 	(has(kidney);(no(kidney)->updateChance(hypertension,15))),
 	(has(headache);(no(headache)->updateChance(hypertension,15))).
 
