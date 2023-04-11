@@ -1,4 +1,4 @@
-import { ChatInputCommand, Command, container } from '@sapphire/framework';
+import { ChatInputCommand, Command } from '@sapphire/framework';
 import { Message } from "discord.js";
 import { isMessageInstance } from "@sapphire/discord.js-utilities";
 
@@ -16,8 +16,8 @@ export class PingCommand extends Command {
                 .setName(this.name)
                 .setDescription(this.description)
         }, {
-            guildIds: [process.env.TEST_GUILD_ID ?? ''],
-            idHints: ['1092428204653940827']
+            guildIds: process.env.TEST_GUILD_ID ? [process.env.TEST_GUILD_ID] : [],
+            idHints: []
         });
     }
 
@@ -25,12 +25,12 @@ export class PingCommand extends Command {
         const sentMessage = await interaction.reply({ content: 'Pinging...', ephemeral: true, fetchReply: true });
 
         return isMessageInstance(sentMessage) ?
-            interaction.editReply(`Pong! Latency is ${sentMessage.createdTimestamp - interaction.createdTimestamp}ms. API Latency is ${Math.round(container.client.ws.ping)}ms`) :
+            interaction.editReply(`Pong! Latency is ${sentMessage.createdTimestamp - interaction.createdTimestamp}ms. API Latency is ${Math.round(this.container.client.ws.ping)}ms`) :
             interaction.editReply('Failed to get ping.');
     }
 
     async messageRun(message: Message) {
         const sentMessage = await message.channel.send('Pinging...');
-        return sentMessage.edit(`Pong! Latency is ${sentMessage.createdTimestamp - message.createdTimestamp}ms. API Latency is ${Math.round(container.client.ws.ping)}ms`);
+        return sentMessage.edit(`Pong! Latency is ${sentMessage.createdTimestamp - message.createdTimestamp}ms. API Latency is ${Math.round(this.container.client.ws.ping)}ms`);
     }
 }
