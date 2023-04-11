@@ -114,8 +114,8 @@ gastroenteritis:-
 	(has(nausea_or_vomiting);(no(nausea_or_vomiting)->updateChance(gastroenteritis,15))),
 	(has(diarrhea);(no(diarrhea)->updateChance(gastroenteritis,20))),
 	(has(abdominal);(no(abdominal)->updateChance(gastroenteritis,20))),
-	(Has(travel);(no(travel)->updateChance(gastroenteritis,15))),
-	(has(contaminated);(no(contaminated)->updateChance(gastroenteritis,20)))
+	(has(travel);(no(travel)->updateChance(gastroenteritis,15))),
+	(has(contaminated);(no(contaminated)->updateChance(gastroenteritis,20))).
 
 dengue:-
 	(has(fever); (no(fever) -> updateChance(dengue,20))),
@@ -125,7 +125,7 @@ dengue:-
 	(has(bleeding);(no(bleeding)->updateChance(dengue,20))).
 
 uti:-
-	(has(urge_to_urinate);(no(urge_to_urinate)->updateChance(uti,20)),
+	(has(urge_to_urinate);(no(urge_to_urinate)->updateChance(uti,20))),
 	(has(burning_sensation);(no(burning_sensation)->updateChance(uti,20))),
 	(has(small_urine);(no(small_urine)->updateChance(uti,15))),
 	(has(dark_urine);(no(dark_urine)->updateChance(uti,15))),
